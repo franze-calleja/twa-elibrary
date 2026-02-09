@@ -5,6 +5,7 @@
 
 'use client'
 
+import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import axios from '@/lib/api'
@@ -125,19 +126,21 @@ export function useCurrentUser() {
     staleTime: 5 * 60 * 1000 // 5 minutes
   })
   
-  // Handle success/error in useEffect
-  if (query.data?.success && query.data.data && token) {
-    // Update user data if it changed
-    const userData = query.data.data.user
-    if (JSON.stringify(user) !== JSON.stringify(userData)) {
-      setAuth(userData, token)
+  // Handle success/error in an effect to avoid state updates during render
+  useEffect(() => {
+    if (query.data?.success && query.data.data && token) {
+      const userData = query.data.data.user
+      if (JSON.stringify(user) !== JSON.stringify(userData)) {
+        setAuth(userData, token)
+      }
     }
-  }
-  
-  if (query.isError && token) {
-    // Token is invalid, logout
-    logout()
-  }
+
+    if (query.isError && token) {
+      // Token is invalid, logout
+      logout()
+    }
+    // We intentionally include only these dependencies to respond to auth query changes
+  }, [query.data, query.isError, token, user, setAuth, logout])
   
   return query
 }
