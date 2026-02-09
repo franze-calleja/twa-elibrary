@@ -17,9 +17,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validated = loginSchema.parse(body)
     
-    // 2. Find user by email
-    const user = await prisma.user.findUnique({
-      where: { email: validated.email }
+    // 2. Find user by email or studentId (identifier)
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: validated.identifier },
+          { studentId: validated.identifier }
+        ]
+      }
     })
     
     if (!user) {
@@ -27,9 +32,9 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: {
-            code: ERROR_CODES.INVALID_CREDENTIALS,
-            message: 'Invalid email or password'
-          }
+                code: ERROR_CODES.INVALID_CREDENTIALS,
+                message: 'Invalid credentials'
+              }
         },
         { status: 401 }
       )
@@ -43,9 +48,9 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: {
-            code: ERROR_CODES.INVALID_CREDENTIALS,
-            message: 'Invalid email or password'
-          }
+                code: ERROR_CODES.INVALID_CREDENTIALS,
+                message: 'Invalid credentials'
+              }
         },
         { status: 401 }
       )

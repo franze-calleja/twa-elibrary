@@ -21,7 +21,7 @@ export default function LoginPage() {
   const login = useLogin()
   const { isAuthenticated, user } = useAuth()
   
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   
@@ -50,7 +50,7 @@ export default function LoginPage() {
     setError(null)
     
     login.mutate(
-      { email, password },
+      { identifier, password },
       {
         onError: (err: any) => {
           const errorMessage = err.response?.data?.error?.message || 'Login failed. Please try again.'
@@ -92,18 +92,18 @@ export default function LoginPage() {
               </Alert>
             )}
             
-            {/* Email Field */}
+            {/* Identifier Field (Email or Student ID) */}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="identifier">Email or Student ID</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="your.email@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="identifier"
+                type="text"
+                placeholder="your.email@example.com or A21-00001"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 required
                 disabled={login.isPending}
-                autoComplete="email"
+                autoComplete="username"
               />
             </div>
             
