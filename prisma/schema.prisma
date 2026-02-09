@@ -1,0 +1,272 @@
+// TWA E-Library Management System - Prisma Schema
+// Documentation: /twa-elibrary-documentation/DATABASE_SCHEMA.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ================================
+// ENUMS
+// ================================
+
+enum UserRole {
+  STAFF
+  STUDENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum BookStatus {
+  AVAILABLE
+  BORROWED
+  RESERVED
+  MAINTENANCE
+  LOST
+  DAMAGED
+}
+
+enum TransactionStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+}
+
+enum TransactionType {
+  BORROW
+  RETURN
+  RENEW
+}
+
+// ================================
+// MODELS
+// ================================
+
+model User {
+  id                String            @id @default(uuid())
+  email             String            @unique
+  password          String            // bcrypt hashed
+  role              UserRole
+  status            UserStatus        @default(ACTIVE)
+  
+  // Common fields
+  firstName         String
+  lastName          String
+  phone             String?
+  avatar            String?
+  
+  // Student-specific fields (nullable for staff)
+  studentId         String?           @unique
+  program           String?
+  yearLevel         Int?
+  borrowingLimit    Int               @default(3)
+  
+  // Timestamps
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  lastLoginAt       DateTime?
+  
+  // Relations
+  transactions      Transaction[]
+  reservations      Reservation[]
+  fines             Fine[]
+  auditLogs         AuditLog[]
+  
+  @@index([email])
+  @@index([studentId])
+  @@index([role])
+  @@index([status])
+}
+
+model Book {
+  id                String            @id @default(uuid())
+  barcode           String            @unique
+  isbn              String?
+  title             String
+  author            String
+  publisher         String?
+  publicationYear   Int?
+  edition           String?
+  pages             Int?
+  description       String?           @db.Text
+  language          String            @default("English")
+  location          String?           // Shelf location (e.g., "A-3-2")
+  status            BookStatus        @default(AVAILABLE)
+  coverImage        String?
+  quantity          Int               @default(1)
+  availableQuantity Int               @default(1)
+  
+  // Timestamps
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  // Relations
+  categories        BookCategory[]
+  transactions      Transaction[]
+  reservations      Reservation[]
+  bookHistory       BookHistory[]
+  
+  @@index([barcode])
+  @@index([status])
+  @@index([title])
+  @@index([author])
+  @@index([isbn])
+}
+
+model Category {
+  id                String            @id @default(uuid())
+  name              String            @unique
+  description       String?
+  parentId          String?
+  
+  // Self-referential relation for hierarchical categories
+  parent            Category?         @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children          Category[]        @relation("CategoryHierarchy")
+  
+  // Relations
+  books             BookCategory[]
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  @@index([name])
+  @@index([parentId])
+}
+
+model BookCategory {
+  bookId            String
+  categoryId        String
+  
+  book              Book              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  category          Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  @@id([bookId, categoryId])
+  @@index([bookId])
+  @@index([categoryId])
+}
+
+model Transaction {
+  id                String            @id @default(uuid())
+  bookId            String
+  userId            String
+  type              TransactionType   @default(BORROW)
+  status            TransactionStatus @default(ACTIVE)
+  
+  borrowedAt        DateTime          @default(now())
+  dueDate           DateTime
+  returnedAt        DateTime?
+  renewalCount      Int               @default(0)
+  
+  notes             String?           @db.Text
+  processedBy       String?           // Staff user ID who processed the transaction
+  
+  // Relations
+  book              Book              @relation(fields: [bookId], references: [id])
+  user              User              @relation(fields: [userId], references: [id])
+  fine              Fine?
+  
+  @@index([bookId])
+  @@index([userId])
+  @@index([status])
+  @@index([dueDate])
+  @@index([borrowedAt])
+}
+
+model Reservation {
+  id                String            @id @default(uuid())
+  bookId            String
+  userId            String
+  status            String            @default("PENDING") // PENDING, FULFILLED, CANCELLED, EXPIRED
+  
+  reservedAt        DateTime          @default(now())
+  expiresAt         DateTime
+  fulfilledAt       DateTime?
+  cancelledAt       DateTime?
+  
+  // Relations
+  book              Book              @relation(fields: [bookId], references: [id])
+  user              User              @relation(fields: [userId], references: [id])
+  
+  @@index([bookId])
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model Fine {
+  id                String            @id @default(uuid())
+  transactionId     String            @unique
+  userId            String
+  amount            Decimal           @db.Decimal(10, 2)
+  reason            String
+  status            String            @default("UNPAID") // UNPAID, PAID, WAIVED
+  
+  issuedAt          DateTime          @default(now())
+  paidAt            DateTime?
+  
+  notes             String?           @db.Text
+  
+  // Relations
+  transaction       Transaction       @relation(fields: [transactionId], references: [id])
+  user              User              @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([status])
+  @@index([issuedAt])
+}
+
+model BookHistory {
+  id                String            @id @default(uuid())
+  bookId            String
+  action            String            // CREATED, UPDATED, STATUS_CHANGED, DELETED, etc.
+  description       String            @db.Text
+  performedBy       String?           // User ID who performed the action
+  
+  createdAt         DateTime          @default(now())
+  
+  // Relations
+  book              Book              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  
+  @@index([bookId])
+  @@index([createdAt])
+  @@index([action])
+}
+
+model Settings {
+  id                String            @id @default(uuid())
+  key               String            @unique
+  value             String            @db.Text
+  description       String?
+  
+  updatedAt         DateTime          @updatedAt
+  
+  @@index([key])
+}
+
+model AuditLog {
+  id                String            @id @default(uuid())
+  userId            String?
+  action            String            // LOGIN, LOGOUT, CREATE_BOOK, UPDATE_USER, etc.
+  entityType        String?           // USER, BOOK, TRANSACTION, FINE, etc.
+  entityId          String?
+  description       String            @db.Text
+  ipAddress         String?
+  userAgent         String?           @db.Text
+  
+  createdAt         DateTime          @default(now())
+  
+  // Relations
+  user              User?             @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([entityType])
+  @@index([createdAt])
+  @@index([action])
+}
