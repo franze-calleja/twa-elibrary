@@ -59,6 +59,7 @@ model User {
   // Common fields
   firstName         String
   lastName          String
+  middleName        String?
   phone             String?
   avatar            String?
   

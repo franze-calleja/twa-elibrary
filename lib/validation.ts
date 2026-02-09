@@ -30,8 +30,16 @@ export const registerSchema = z.object({
     .min(1, 'Please confirm your password'),
   studentId: z.string()
     .min(1, 'Student ID is required'),
-  activationCode: z.string()
-    .min(1, 'Activation code is required')
+  firstName: z.string()
+    .min(1, 'First name is required')
+    .max(50),
+  lastName: z.string()
+    .min(1, 'Last name is required')
+    .max(50),
+  middleName: z.string()
+    .max(50)
+    .optional()
+    .or(z.literal(''))
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ['confirmPassword']
@@ -120,6 +128,10 @@ export const studentPreRegisterSchema = z.object({
   lastName: z.string()
     .min(1, 'Last name is required')
     .max(50),
+  middleName: z.string()
+    .max(50)
+    .optional()
+    .or(z.literal('')),
   studentId: z.string()
     .min(1, 'Student ID is required')
     .max(50),
@@ -138,6 +150,7 @@ export const studentPreRegisterSchema = z.object({
     .int()
     .min(1)
     .max(10)
+    .optional()
     .default(3)
 })
 
