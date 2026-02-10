@@ -22,6 +22,8 @@ git push origin main
 ### 3️⃣ Create Vercel Project
 - Go to [vercel.com](https://vercel.com)
 - New Project → Import `twa-elibrary` repo
+- Framework: Next.js (auto-detected)
+- Build Command: `npm run build` (automatically runs `prisma generate`)
 - **Don't deploy yet!**
 
 ### 4️⃣ Add Vercel Environment Variables

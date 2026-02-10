@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "npx prisma generate",
@@ -12,7 +12,8 @@
     "prisma:studio": "npx prisma studio",
     "prisma:status": "npx prisma migrate status",
     "prisma:seed": "npx prisma db seed",
-    "db:seed": "npm run prisma:seed"
+    "db:seed": "npm run prisma:seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

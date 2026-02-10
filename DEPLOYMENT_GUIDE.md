@@ -61,9 +61,11 @@ Click **Add secret**.
 4. **Configure Project**:
    - **Framework Preset**: Next.js (auto-detected)
    - **Root Directory**: `./` (project root)
-   - **Build Command**: `npm run build` (default is fine)
+   - **Build Command**: `npm run build` (default - automatically runs `prisma generate`)
    - **Output Directory**: `.next` (default is fine)
    - **Install Command**: `npm install` (default is fine)
+
+✅ **Note**: The build process automatically runs `prisma generate` via the `postinstall` script, so no additional configuration needed.
 
 **Don't deploy yet!** Click **Environment Variables** first.
 
