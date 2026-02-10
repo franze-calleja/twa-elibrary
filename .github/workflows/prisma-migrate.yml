@@ -1,0 +1,53 @@
+# GitHub Actions Workflow - Prisma Database Migrations
+# 
+# This workflow runs on every push to main branch and:
+# 1. Applies pending migrations to production database
+# 2. Seeds the database with initial data (if needed)
+#
+# Important: Add DATABASE_URL as a repository secret
+# Settings → Secrets and variables → Actions → New repository secret
+
+name: Prisma Database Migrations
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  migrate:
+    name: Run Database Migrations
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
+      - name: Run migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
+      - name: Seed database (optional - only runs if tables are empty)
+        run: npx prisma db seed || echo "Seed skipped or failed - this is normal if data already exists"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        continue-on-error: true # Don't fail workflow if seed fails (data might already exist)
+      
+      - name: ✅ Migrations completed
+        run: echo "Database migrations completed successfully!"

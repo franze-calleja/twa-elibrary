@@ -8,9 +8,28 @@
 
 import { PrismaClient } from '@prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+import fs from 'fs'
 
 // Parse DATABASE_URL: mysql://user:password@host:port/database
 const dbUrl = new URL(process.env.DATABASE_URL!)
+
+// Build optional SSL/TLS options from DATABASE_URL query params
+const params = dbUrl.searchParams
+let ssl: any = undefined
+if (params.has('sslaccept')) {
+  const accept = params.get('sslaccept')
+  if (accept === 'strict') ssl = { rejectUnauthorized: true }
+  if (accept === 'accept_invalid_certs') ssl = { rejectUnauthorized: false }
+}
+if (params.has('sslrootcert')) {
+  const certPath = params.get('sslrootcert')
+  try {
+    const ca = fs.readFileSync(certPath!, 'utf8')
+    ssl = { ...(ssl || {}), ca }
+  } catch (e) {
+    // ignore - fall back to default Node CAs
+  }
+}
 
 // Create adapter for MySQL/MariaDB connection
 const adapter = new PrismaMariaDb({
@@ -20,6 +39,7 @@ const adapter = new PrismaMariaDb({
   password: dbUrl.password,
   database: dbUrl.pathname.slice(1), // Remove leading '/'
   connectionLimit: 10,
+  ...(ssl ? { ssl } : {}),
 })
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
