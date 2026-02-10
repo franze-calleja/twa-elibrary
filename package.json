@@ -12,8 +12,7 @@
     "prisma:studio": "npx prisma studio",
     "prisma:status": "npx prisma migrate status",
     "prisma:seed": "npx prisma db seed",
-    "db:seed": "npm run prisma:seed",
-    "postinstall": "prisma generate"
+    "db:seed": "npm run prisma:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
