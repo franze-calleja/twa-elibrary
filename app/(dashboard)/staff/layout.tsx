@@ -39,32 +39,17 @@ const navItems: NavItem[] = [
   {
     title: 'Books',
     href: '/staff/books',
-    icon: BookOpen,
-    children: [
-      { title: 'All Books', href: '/staff/books', icon: BookOpen },
-      { title: 'Add New Book', href: '/staff/books/new', icon: BookOpen }
-    ]
+    icon: BookOpen
   },
   {
     title: 'Students',
     href: '/staff/students',
-    icon: Users,
-    children: [
-      { title: 'All Students', href: '/staff/students', icon: Users },
-      { title: 'Pre-Register', href: '/staff/students/pre-register', icon: Users },
-      { title: 'Import CSV', href: '/staff/students/import', icon: Users }
-    ]
+    icon: Users
   },
   {
     title: 'Transactions',
     href: '/staff/transactions',
-    icon: ArrowRightLeft,
-    children: [
-      { title: 'All Transactions', href: '/staff/transactions', icon: ArrowRightLeft },
-      { title: 'Borrow Book', href: '/staff/transactions/borrow', icon: ArrowRightLeft },
-      { title: 'Return Book', href: '/staff/transactions/return', icon: ArrowRightLeft },
-      { title: 'Overdue Books', href: '/staff/transactions/overdue', icon: ArrowRightLeft }
-    ]
+    icon: ArrowRightLeft
   },
   {
     title: 'Fines',
@@ -134,42 +119,20 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto p-4 space-y-2">
             {navItems.map((item) => (
-              <div key={item.href}>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    pathname === item.href || pathname.startsWith(item.href + '/')
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  )}
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.title}
-                </Link>
-                
-                {/* Sub-navigation */}
-                {item.children && pathname.startsWith(item.href) && (
-                  <div className="ml-6 mt-1 space-y-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className={cn(
-                          "block px-3 py-1.5 rounded-md text-xs transition-colors",
-                          pathname === child.href
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        )}
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        {child.title}
-                      </Link>
-                    ))}
-                  </div>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  pathname === item.href || pathname.startsWith(item.href + '/')
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 )}
-              </div>
+                onClick={() => setSidebarOpen(false)}
+              >
+                <item.icon className="h-5 w-5" />
+                {item.title}
+              </Link>
             ))}
           </nav>
 
