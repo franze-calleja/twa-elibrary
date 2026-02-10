@@ -72,7 +72,10 @@ export const bookSchema = z.object({
     .min(1, 'Author is required')
     .max(100, 'Author must not exceed 100 characters'),
   isbn: z.string()
-    .regex(/^(?:\d{10}|\d{13})$/, 'Invalid ISBN format (must be 10 or 13 digits)')
+    .refine(
+      (val) => !val || /^(?:\d{10}|\d{13})$/.test(val),
+      'Invalid ISBN format (must be 10 or 13 digits)'
+    )
     .optional()
     .or(z.literal('')),
   publisher: z.string()
