@@ -240,3 +240,33 @@ export interface FineQueryParams {
   sortBy?: 'issuedAt' | 'amount'
   sortOrder?: 'asc' | 'desc'
 }
+
+// ================================
+// Account Management Types
+// ================================
+
+export interface UserProfile extends Omit<User, 'password'> {
+  _count?: {
+    transactions: number
+    fines: number
+  }
+}
+
+export interface ProfileUpdateData {
+  phone?: string
+  avatar?: string
+}
+
+export interface PasswordChangeData {
+  currentPassword: string
+  newPassword: string
+  confirmNewPassword: string
+}
+
+export interface AccountStats {
+  activeLoans: number
+  unpaidFines: number
+  borrowingLimit: number
+  availableSlots: number
+  canBorrow: boolean
+}

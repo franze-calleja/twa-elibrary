@@ -175,6 +175,18 @@ export const updateUserSchema = z.object({
     .or(z.literal(''))
 })
 
+// Student account profile update (limited fields)
+export const updateProfileSchema = z.object({
+  phone: z.string()
+    .regex(/^[+]?[0-9]{10,15}$/, 'Invalid phone number format')
+    .optional()
+    .or(z.literal('')),
+  avatar: z.string()
+    .url('Invalid avatar URL')
+    .optional()
+    .or(z.literal(''))
+})
+
 // ================================
 // Transaction Schemas
 // ================================
@@ -210,6 +222,7 @@ export type BookInput = z.infer<typeof bookSchema>
 export type UpdateBookInput = z.infer<typeof updateBookSchema>
 export type StudentPreRegisterInput = z.infer<typeof studentPreRegisterSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 export type BorrowBookInput = z.infer<typeof borrowBookSchema>
 export type ReturnBookInput = z.infer<typeof returnBookSchema>
 export type RenewBookInput = z.infer<typeof renewBookSchema>
