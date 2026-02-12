@@ -249,7 +249,7 @@ export const returnBookSchema = z.object({
     .min(1, 'Barcode is required')
     .optional(),
   condition: z.enum(['GOOD', 'DAMAGED', 'LOST'], {
-    errorMap: () => ({ message: 'Invalid book condition' })
+    message: 'Invalid book condition'
   }).default('GOOD'),
   notes: z.string()
     .max(500)
