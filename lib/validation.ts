@@ -240,7 +240,7 @@ export const processBorrowSchema = z.discriminatedUnion('approved', [
   rejectBorrowSchema
 ])
 
-// Staff returns a book (by barcode scan)
+// Staff returns a book (by barcode scan or from transaction)
 export const returnBookSchema = z.object({
   bookId: z.string()
     .uuid('Invalid book ID')
@@ -255,10 +255,8 @@ export const returnBookSchema = z.object({
     .max(500)
     .optional()
     .or(z.literal(''))
-}).refine(data => data.bookId || data.barcode, {
-  message: 'Either bookId or barcode is required',
-  path: ['bookId']
 })
+// Note: bookId/barcode not required when called with transaction ID
 
 // Student/Staff renews a book
 export const renewBookSchema = z.object({
