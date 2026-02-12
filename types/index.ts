@@ -301,10 +301,20 @@ export interface BorrowRejection {
 
 export type ProcessBorrow = BorrowApproval | BorrowRejection
 
+// Alternative format for ProcessBorrow using action property
+export interface ProcessBorrowAction {
+  action: 'approve' | 'reject'
+  rejectionReason?: string
+  notes?: string
+}
+
+// Book condition type
+export type BookCondition = 'GOOD' | 'DAMAGED' | 'LOST'
+
 export interface ReturnBookRequest {
   bookId?: string
   barcode?: string
-  condition: 'GOOD' | 'DAMAGED' | 'LOST'
+  condition: BookCondition
   notes?: string
 }
 

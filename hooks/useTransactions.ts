@@ -220,11 +220,11 @@ export function useCreateBorrowRequest(): UseMutationResult<any, any, BorrowRequ
 /**
  * Process borrow request (staff approve/reject)
  */
-export function useProcessBorrowRequest(transactionId: string): UseMutationResult<any, any, ProcessBorrow> {
+export function useProcessBorrowRequest(transactionId: string): UseMutationResult<any, any, any> {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (data: ProcessBorrow) => {
+    mutationFn: async (data: any) => {
       const res = await axios.patch(`/transactions/${transactionId}/process`, data)
       return res.data
     },
@@ -261,11 +261,11 @@ export function useReturnBook(transactionId: string): UseMutationResult<any, any
 /**
  * Renew book (student or staff)
  */
-export function useRenewBook(transactionId: string): UseMutationResult<any, any, RenewBookRequest> {
+export function useRenewBook(transactionId: string): UseMutationResult<any, any, any> {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (data: RenewBookRequest) => {
+    mutationFn: async (data: any = {}) => {
       const res = await axios.patch(`/transactions/${transactionId}/renew`, data)
       return res.data
     },
