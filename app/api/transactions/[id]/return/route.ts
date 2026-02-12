@@ -10,14 +10,13 @@ import { verifyAuth } from '@/lib/auth'
 import { returnBookSchema } from '@/lib/validation'
 import { z } from 'zod'
 import { differenceInDays } from 'date-fns'
-import { use } from 'react'
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = use(params)
+    const { id } = await params
     const user = await verifyAuth(request)
     
     if (!user) {

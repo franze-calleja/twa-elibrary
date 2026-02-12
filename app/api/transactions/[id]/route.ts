@@ -6,14 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyAuth } from '@/lib/auth'
-import  { use } from 'react'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = use(params)
+    const { id } = await params
     const user = await verifyAuth(request)
     
     if (!user) {
