@@ -29,7 +29,7 @@ import {
 } from 'lucide-react'
 import { Alert as AlertComponent } from '@/components/ui/alert'
 import { addDays, format } from 'date-fns'
-import type { TransactionWithDetails, ProcessBorrowAction } from '@/types'
+import type { TransactionWithDetails } from '@/types'
 
 interface ProcessRequestDialogProps {
   transaction: TransactionWithDetails
@@ -61,10 +61,10 @@ export function ProcessRequestDialog({
     }
 
     try {
-      const requestData: ProcessBorrowAction = {
-        action,
-        ...(action === 'reject' && { rejectionReason })
-      }
+      // Format data according to backend schema
+      const requestData = action === 'approve' 
+        ? { approved: true as const }
+        : { approved: false as const, rejectionReason }
       
       await processRequest.mutateAsync(requestData)
 
