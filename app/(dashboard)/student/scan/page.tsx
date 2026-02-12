@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { BarcodeScanner } from '@/components/scanner/BarcodeScanner'
 import { BorrowRequestDialog } from '@/components/transactions/BorrowRequestDialog'
-import { useBook } from '@/hooks/useBooks'
+import { useBookByBarcode } from '@/hooks/useBooks'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AlertCircle, BookOpen, ScanLine, Info } from 'lucide-react'
 import Image from 'next/image'
@@ -22,7 +22,7 @@ export default function ScanBookPage() {
   const [showScanner, setShowScanner] = useState(false)
   const [showBorrowDialog, setShowBorrowDialog] = useState(false)
 
-  const { data, isLoading, error } = useBook(scannedBarcode || '')
+  const { data, isLoading, error } = useBookByBarcode(scannedBarcode)
   const book = data?.book
 
   const handleScan = (code: string) => {
