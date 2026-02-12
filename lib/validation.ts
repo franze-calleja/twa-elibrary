@@ -191,24 +191,86 @@ export const updateProfileSchema = z.object({
 // Transaction Schemas
 // ================================
 
+// Student creates borrow request
 export const borrowBookSchema = z.object({
   bookId: z.string()
-    .uuid('Invalid book ID'),
-  userId: z.string()
-    .uuid('Invalid user ID')
+    .uuid('Invalid book ID')
+    .optional(),
+  barcode: z.string()
+    .min(1, 'Invalid barcode')
+    .optional(),
+  requestedDays: z.number()
+    .int()
+    .min(1, 'Minimum borrow period is 1 day')
+    .max(90, 'Maximum borrow period is 90 days')
+    .default(14),
+  notes: z.string()
+    .max(500, 'Notes must not exceed 500 characters')
+    .optional()
+    .or(z.literal(''))
+}).refine(data => data.bookId || data.barcode, {
+  message: 'Either bookId or barcode is required',
+  path: ['bookId']
 })
 
-export const returnBookSchema = z.object({
-  transactionId: z.string()
-    .uuid('Invalid transaction ID'),
+// Staff approves borrow request
+export const approveBorrowSchema = z.object({
+  approved: z.literal(true),
   notes: z.string()
+    .max(500)
     .optional()
     .or(z.literal(''))
 })
 
+// Staff rejects borrow request
+export const rejectBorrowSchema = z.object({
+  approved: z.literal(false),
+  rejectionReason: z.string()
+    .min(1, 'Rejection reason is required')
+    .max(500, 'Reason must not exceed 500 characters'),
+  notes: z.string()
+    .max(500)
+    .optional()
+    .or(z.literal(''))
+})
+
+// Combined approval/rejection schema
+export const processBorrowSchema = z.discriminatedUnion('approved', [
+  approveBorrowSchema,
+  rejectBorrowSchema
+])
+
+// Staff returns a book (by barcode scan)
+export const returnBookSchema = z.object({
+  bookId: z.string()
+    .uuid('Invalid book ID')
+    .optional(),
+  barcode: z.string()
+    .min(1, 'Barcode is required')
+    .optional(),
+  condition: z.enum(['GOOD', 'DAMAGED', 'LOST'], {
+    errorMap: () => ({ message: 'Invalid book condition' })
+  }).default('GOOD'),
+  notes: z.string()
+    .max(500)
+    .optional()
+    .or(z.literal(''))
+}).refine(data => data.bookId || data.barcode, {
+  message: 'Either bookId or barcode is required',
+  path: ['bookId']
+})
+
+// Student/Staff renews a book
 export const renewBookSchema = z.object({
-  transactionId: z.string()
-    .uuid('Invalid transaction ID')
+  additionalDays: z.number()
+    .int()
+    .min(1, 'Minimum renewal period is 1 day')
+    .max(30, 'Maximum renewal period is 30 days')
+    .optional(),
+  notes: z.string()
+    .max(500)
+    .optional()
+    .or(z.literal(''))
 })
 
 // ================================
@@ -224,5 +286,6 @@ export type StudentPreRegisterInput = z.infer<typeof studentPreRegisterSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 export type BorrowBookInput = z.infer<typeof borrowBookSchema>
+export type ProcessBorrowInput = z.infer<typeof processBorrowSchema>
 export type ReturnBookInput = z.infer<typeof returnBookSchema>
 export type RenewBookInput = z.infer<typeof renewBookSchema>

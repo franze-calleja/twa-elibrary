@@ -34,9 +34,11 @@ enum BookStatus {
 }
 
 enum TransactionStatus {
-  ACTIVE
-  RETURNED
-  OVERDUE
+  PENDING      // Student requested, awaiting staff approval
+  ACTIVE       // Approved and currently borrowed
+  RETURNED     // Book has been returned
+  OVERDUE      // Past due date
+  REJECTED     // Staff rejected the request
 }
 
 enum TransactionType {
@@ -158,15 +160,20 @@ model Transaction {
   bookId            String
   userId            String
   type              TransactionType   @default(BORROW)
-  status            TransactionStatus @default(ACTIVE)
+  status            TransactionStatus @default(PENDING)
   
   borrowedAt        DateTime          @default(now())
   dueDate           DateTime
   returnedAt        DateTime?
   renewalCount      Int               @default(0)
   
+  requestedDays     Int?              // Days requested by student
+  
   notes             String?           @db.Text
   processedBy       String?           // Staff user ID who processed the transaction
+  approvedAt        DateTime?         // When staff approved the request
+  rejectedAt        DateTime?         // When staff rejected the request
+  rejectionReason   String?           // Reason for rejection
   
   // Relations
   book              Book              @relation(fields: [bookId], references: [id])

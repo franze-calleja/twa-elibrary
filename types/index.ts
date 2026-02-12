@@ -270,3 +270,66 @@ export interface AccountStats {
   availableSlots: number
   canBorrow: boolean
 }
+
+// ================================
+// Transaction / Borrowing Types
+// ================================
+
+export interface TransactionWithDetails extends Transaction {
+  book: Book
+  user: Omit<User, 'password'>
+  fine?: Fine
+}
+
+export interface BorrowRequest {
+  bookId?: string
+  barcode?: string
+  requestedDays: number
+  notes?: string
+}
+
+export interface BorrowApproval {
+  approved: true
+  notes?: string
+}
+
+export interface BorrowRejection {
+  approved: false
+  rejectionReason: string
+  notes?: string
+}
+
+export type ProcessBorrow = BorrowApproval | BorrowRejection
+
+export interface ReturnBookRequest {
+  bookId?: string
+  barcode?: string
+  condition: 'GOOD' | 'DAMAGED' | 'LOST'
+  notes?: string
+}
+
+export interface RenewBookRequest {
+  additionalDays?: number
+  notes?: string
+}
+
+export interface BorrowEligibility {
+  eligible: boolean
+  reason?: string
+  details?: {
+    bookAvailable?: boolean
+    accountActive?: boolean
+    withinLimit?: boolean
+    noOverdueBooks?: boolean
+    noUnpaidFines?: boolean
+  }
+}
+
+export interface TransactionStats {
+  total: number
+  pending: number
+  active: number
+  returned: number
+  overdue: number
+  rejected: number
+}

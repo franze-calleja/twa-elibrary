@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `Transaction` ADD COLUMN `approvedAt` DATETIME(3) NULL,
+    ADD COLUMN `rejectedAt` DATETIME(3) NULL,
+    ADD COLUMN `rejectionReason` VARCHAR(191) NULL,
+    ADD COLUMN `requestedDays` INTEGER NULL,
+    MODIFY `status` ENUM('PENDING', 'ACTIVE', 'RETURNED', 'OVERDUE', 'REJECTED') NOT NULL DEFAULT 'PENDING';
