@@ -12,8 +12,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, BookOpen, AlertCircle, CheckCircle } from 'lucide-react'
+import { Loader2, AlertCircle, CheckCircle, Info } from 'lucide-react'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -89,159 +91,172 @@ export default function RegisterPage() {
   
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <div className="flex justify-center">
-          <div className="rounded-full bg-primary p-3">
-            <BookOpen className="h-8 w-8 text-primary-foreground" />
-          </div>
-        </div>
-        <h1 className="text-3xl font-bold tracking-tight">TWA E-Library</h1>
-        <p className="text-muted-foreground">Activate your student account</p>
-      </div>
-      
-      {/* Registration Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Student Registration</CardTitle>
-          <CardDescription>
-            Complete your registration using the same information provided during pre-registration
-          </CardDescription>
-        </CardHeader>
-        
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            {/* Error Alert */}
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            
-            {/* Email Field */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="email"
-              />
-              <p className="text-xs text-muted-foreground">
-                Use the email address registered by the library staff
-              </p>
-            </div>
-            
-            {/* Student ID Field */}
-            <div className="space-y-2">
-              <Label htmlFor="studentId">Student ID</Label>
-              <Input
-                id="studentId"
-                name="studentId"
-                type="text"
-                placeholder="20XX-XXXXX"
-                value={formData.studentId}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="off"
-              />
-            </div>
-            
-            {/* First Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="firstName">First Name</Label>
-              <Input
-                id="firstName"
-                name="firstName"
-                type="text"
-                placeholder="First name as registered"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="given-name"
-              />
-            </div>
-            
-            {/* Last Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name</Label>
-              <Input
-                id="lastName"
-                name="lastName"
-                type="text"
-                placeholder="Last name as registered"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="family-name"
-              />
-            </div>
-            
-            {/* Middle Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="middleName">Middle Name (Optional)</Label>
-              <Input
-                id="middleName"
-                name="middleName"
-                type="text"
-                placeholder="Middle name if registered"
-                value={formData.middleName}
-                onChange={handleChange}
-                disabled={register.isPending}
-                autoComplete="additional-name"
-              />
-              <p className="text-xs text-muted-foreground">
-                Enter exactly as registered, or leave blank if not registered with middle name
-              </p>
-            </div>
-            
-            {/* Password Field */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="new-password"
-                minLength={8}
-              />
-              <p className="text-xs text-muted-foreground">
-                Must be at least 8 characters with uppercase, lowercase, and numbers
-              </p>
-            </div>
-            
-            {/* Confirm Password Field */}
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                disabled={register.isPending}
-                autoComplete="new-password"
-              />
-            </div>
+      {/* Registration Form (wider) */}
+      <div className="mx-auto w-full max-w-3xl">
+        <div className="rounded-lg overflow-hidden border">
+          <div className="h-1 bg-primary" />
+          <Card>
+            <CardHeader>
+              <div className="flex justify-center mb-2">
+                <Image
+                  src="/digital-library-seal.png"
+                  alt="TWA E-Library"
+                  width={96}
+                  height={96}
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <div className="text-center mb-2">
+                <h1 className="text-2xl font-bold">TWA E-Library</h1>
+                <p className="text-sm text-muted-foreground">Activate your student account</p>
+              </div>
+              <CardTitle>Student Registration</CardTitle>
+            </CardHeader>
+
+            <form onSubmit={handleSubmit}>
+              <CardContent className="space-y-4">
+              {/* Error Alert */}
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                {/* Email Field - full width */}
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="email"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Use the email address registered by the library staff
+                  </p>
+                </div>
+
+                {/* Student ID */}
+                <div className="space-y-2">
+                  <Label htmlFor="studentId">Student ID</Label>
+                  <Input
+                    id="studentId"
+                    name="studentId"
+                    type="text"
+                    placeholder="20XX-XXXXX"
+                    value={formData.studentId}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="off"
+                  />
+                </div>
+
+                {/* First Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    placeholder="First name as registered"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="given-name"
+                  />
+                </div>
+
+                {/* Last Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="Last name as registered"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="family-name"
+                  />
+                </div>
+
+                {/* Middle Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="middleName">Middle Name (Optional)</Label>
+                  <Input
+                    id="middleName"
+                    name="middleName"
+                    type="text"
+                    placeholder="Middle name if registered"
+                    value={formData.middleName}
+                    onChange={handleChange}
+                    disabled={register.isPending}
+                    autoComplete="additional-name"
+                  />
+                  
+                </div>
+
+                {/* Password */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="password">Password</Label>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button type="button" className="text-muted-foreground">
+                            <Info className="h-4 w-4" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          Must be at least 8 characters with uppercase, lowercase, and numbers
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="new-password"
+                    minLength={8}
+                  />
+                </div>
+
+                {/* Confirm Password */}
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                    disabled={register.isPending}
+                    autoComplete="new-password"
+                  />
+                </div>
+              </div>
           </CardContent>
           
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-4 mt-6">
             {/* Submit Button */}
             <Button 
               type="submit" 
@@ -271,7 +286,9 @@ export default function RegisterPage() {
           </CardFooter>
         </form>
       </Card>
-      
+        </div>
+      </div>
+
       {/* Help Card */}
       <Card className="border-dashed">
         <CardHeader>

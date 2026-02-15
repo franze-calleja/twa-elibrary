@@ -124,7 +124,7 @@ export default function Home() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Feature Cards */}
-          <Card className="border-2 hover:border-primary transition-all hover:shadow-lg">
+          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
             <CardContent className="pt-6 text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <BookOpen className="h-6 w-6 text-primary" />
@@ -138,7 +138,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 hover:border-primary transition-all hover:shadow-lg">
+          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
             <CardContent className="pt-6 text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <Clock className="h-6 w-6 text-primary" />
@@ -152,7 +152,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 hover:border-primary transition-all hover:shadow-lg">
+          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
             <CardContent className="pt-6 text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <Shield className="h-6 w-6 text-primary" />
@@ -168,31 +168,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <Card className="bg-gradient-to-r from-primary to-indigo-600 border-0 text-white">
-          <CardContent className="p-8 sm:p-12 text-center space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-bold">
-              Ready to Get Started?
-            </h2>
-            <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
-              Join hundreds of students already using our digital library platform
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto text-base px-8 py-6">
-                  Create Account
-                </Button>
-              </Link>
-              <Link href="/login">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto text-base px-8 py-6 border-2 border-white text-black hover:bg-white/10">
-                  Sign In
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
+      {/* (Removed CTA section as requested) */}
 
       {/* Footer */}
       <footer className="border-t bg-background/50 backdrop-blur-sm mt-20">
