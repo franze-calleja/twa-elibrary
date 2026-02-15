@@ -186,7 +186,9 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                   {user?.avatar ? (
                     <AvatarImage src={user.avatar} alt={user.firstName ?? 'User'} />
                   ) : (
-                    <AvatarFallback>{(user?.firstName || 'U')[0]}</AvatarFallback>
+                    <AvatarFallback className="bg-yellow-500 text-white">
+                      {(user?.firstName || 'U')[0]}
+                    </AvatarFallback>
                   )}
                 </Avatar>
                 <div className={cn('text-sm font-medium', sidebarCollapsed ? 'hidden' : 'block')}>

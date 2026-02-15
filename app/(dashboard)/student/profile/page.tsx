@@ -69,11 +69,6 @@ export default function ProfilePage() {
         </p>
       </div>
 
-      {/* Stats Overview */}
-      <ProfileStats />
-
-      <Separator />
-
       {/* Tabs for Profile Sections */}
       <Tabs defaultValue="profile" className="space-y-4">
         <TabsList>
@@ -94,6 +89,7 @@ export default function ProfilePage() {
         {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-4">
           <ProfileInfo />
+          <ProfileStats />
         </TabsContent>
 
         {/* Edit Profile Tab */}

@@ -62,9 +62,11 @@ export function ProfileInfo() {
       <CardContent className="space-y-6">
         {/* Avatar and Name Section */}
         <div className="flex items-center gap-4">
-          <Avatar className="h-20 w-20 bg-primary text-primary-foreground">
+          <Avatar className="h-20 w-20">
             <AvatarImage src={getAvatarUrl(profile)} alt={fullName} />
-            <AvatarFallback className="text-lg text-primary-foreground">{getUserInitials(profile)}</AvatarFallback>
+            <AvatarFallback className={`text-lg !text-white ${profile.role === 'STUDENT' ? '!bg-yellow-500' : '!bg-primary'}`}>
+              {getUserInitials(profile)}
+            </AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-primary">{fullName}</h2>
