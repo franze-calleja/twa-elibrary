@@ -17,8 +17,8 @@ import { AlertCircle, BookOpen } from 'lucide-react'
 export default function BrowseBooksPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
-  const [categoryId, setCategoryId] = useState('')
-  const [status, setStatus] = useState('')
+  const [categoryId, setCategoryId] = useState('all')
+  const [status, setStatus] = useState('all')
   const [sortBy, setSortBy] = useState('title')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
@@ -28,8 +28,8 @@ export default function BrowseBooksPage() {
     page,
     limit,
     search,
-    categoryId,
-    status,
+    categoryId: categoryId === 'all' ? '' : categoryId,
+    status: status === 'all' ? '' : status,
     sortBy,
     sortOrder
   })
@@ -96,7 +96,7 @@ export default function BrowseBooksPage() {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: limit }).map((_, i) => (
             <div key={i} className="flex gap-3 p-3 border rounded-lg">
               <Skeleton className="w-20 h-28 shrink-0" />
@@ -124,7 +124,7 @@ export default function BrowseBooksPage() {
 
       {/* Books Grid */}
       {data && !isLoading && data.books.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {data.books.map((book) => (
             <StudentBookCard key={book.id} book={book} />
           ))}

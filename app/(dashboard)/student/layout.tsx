@@ -237,6 +237,17 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
+
+        {/* Floating Scan Button */}
+        {pathname !== '/student/scan' && (
+          <Link
+            href="/student/scan"
+            className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all hover:scale-110"
+            aria-label="Scan Barcode"
+          >
+            <Scan className="h-6 w-6" />
+          </Link>
+        )}
       </div>
     </div>
   )
