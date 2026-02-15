@@ -132,7 +132,7 @@ export function BorrowRequestDialog({ book, open, onOpenChange, barcode }: Borro
                   sizes="80px"
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
                   <BookOpen className="h-8 w-8 text-muted-foreground" />
                 </div>
               )}
@@ -164,7 +164,7 @@ export function BorrowRequestDialog({ book, open, onOpenChange, barcode }: Borro
                   min="1"
                   max="90"
                   {...form.register('requestedDays', { valueAsNumber: true })}
-                  className="max-w-[120px]"
+                  className="max-w-30"
                 />
                 <span className="text-sm text-muted-foreground">
                   days (1-90)

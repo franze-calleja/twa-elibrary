@@ -141,7 +141,7 @@ export default function MyBooksPage() {
                               sizes="80px"
                             />
                           ) : (
-                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                            <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
                               <BookOpen className="h-8 w-8 text-muted-foreground" />
                             </div>
                           )}
@@ -260,7 +260,7 @@ export default function MyBooksPage() {
                             sizes="80px"
                           />
                         ) : (
-                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                          <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
                             <BookOpen className="h-8 w-8 text-muted-foreground" />
                           </div>
                         )}
