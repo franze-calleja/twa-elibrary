@@ -79,7 +79,7 @@ export async function PATCH(
           data: {
             status: 'ACTIVE',
             processedBy: user.id,
-            approvedAt: new Date(),
+            // TEMPORARILY DISABLED: approvedAt: new Date(),
             notes: validated.notes || transaction.notes
           },
           include: {
@@ -133,8 +133,8 @@ export async function PATCH(
         data: {
           status: 'REJECTED',
           processedBy: user.id,
-          rejectedAt: new Date(),
-          rejectionReason: validated.rejectionReason,
+          // TEMPORARILY DISABLED: rejectedAt: new Date(),
+          // TEMPORARILY DISABLED: rejectionReason: validated.rejectionReason,
           notes: validated.notes || transaction.notes
         },
         include: {
@@ -158,7 +158,8 @@ export async function PATCH(
           action: 'REJECT_BORROW',
           entityType: 'TRANSACTION',
           entityId: id,
-          description: `Staff ${user.firstName} ${user.lastName} rejected borrow request for "${transaction.book.title}" by ${transaction.user.firstName} ${transaction.user.lastName}. Reason: ${validated.rejectionReason}`
+          description: `Staff ${user.firstName} ${user.lastName} rejected borrow request for "${transaction.book.title}" by ${transaction.user.firstName} ${transaction.user.lastName}`
+          // TEMPORARILY DISABLED - Reason: ${validated.rejectionReason}
         }
       })
 

@@ -257,14 +257,15 @@ export default function TransactionDetailPage({
               </div>
             )}
 
-            {transaction.approvedAt && (
+            {/* TEMPORARILY DISABLED - Approval workflow fields */}
+            {/* {transaction.approvedAt && (
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Approved:</span>
                 <span className="text-sm">
                   {format(new Date(transaction.approvedAt), 'MMM dd, yyyy HH:mm')}
                 </span>
               </div>
-            )}
+            )} */}
 
             {transaction.returnedAt && (
               <div className="flex justify-between">
@@ -275,14 +276,15 @@ export default function TransactionDetailPage({
               </div>
             )}
 
-            {transaction.rejectedAt && (
+            {/* TEMPORARILY DISABLED - Approval workflow fields */}
+            {/* {transaction.rejectedAt && (
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Rejected:</span>
                 <span className="text-sm">
                   {format(new Date(transaction.rejectedAt), 'MMM dd, yyyy HH:mm')}
                 </span>
               </div>
-            )}
+            )} */}
 
             {transaction.notes && (
               <>
@@ -297,7 +299,8 @@ export default function TransactionDetailPage({
               </>
             )}
 
-            {transaction.rejectionReason && (
+            {/* TEMPORARILY DISABLED - Approval workflow fields */}
+            {/* {transaction.rejectionReason && (
               <>
                 <Separator />
                 <Alert variant="destructive">
@@ -306,7 +309,7 @@ export default function TransactionDetailPage({
                   <AlertDescription>{transaction.rejectionReason}</AlertDescription>
                 </Alert>
               </>
-            )}
+            )} */}
           </CardContent>
         </Card>
 
