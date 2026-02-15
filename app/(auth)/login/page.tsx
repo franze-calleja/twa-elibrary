@@ -13,8 +13,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, BookOpen, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -62,24 +63,30 @@ export default function LoginPage() {
   
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <div className="flex justify-center">
-          <div className="rounded-full bg-primary p-3">
-            <BookOpen className="h-8 w-8 text-primary-foreground" />
-          </div>
-        </div>
-        <h1 className="text-3xl font-bold tracking-tight">TWA E-Library</h1>
-        <p className="text-muted-foreground">Sign in to your account</p>
-      </div>
+      {/* Header (moved into form) */}
       
       {/* Login Form */}
-      <Card>
+      <div className="rounded-lg overflow-hidden border">
+        <div className="h-1 bg-primary" />
+        <Card>
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access the library system
-          </CardDescription>
+            <div className="flex justify-center mb-2">
+              <Image
+                src="/digital-library-seal.png"
+                alt="TWA E-Library"
+                width={96}
+                height={96}
+                className="rounded-full object-cover"
+              />
+            </div>
+            <div className="text-center mb-2">
+              <h1 className="text-2xl font-bold">TWA E-Library</h1>
+              <p className="text-sm text-muted-foreground">Sign in to your account</p>
+            </div>
+            <CardTitle>Login</CardTitle>
+            <CardDescription>
+              Enter your credentials to access the library system
+            </CardDescription>
         </CardHeader>
         
         <form onSubmit={handleSubmit}>
@@ -123,7 +130,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-6 mt-6">
             {/* Submit Button */}
             <Button 
               type="submit" 
@@ -152,26 +159,8 @@ export default function LoginPage() {
             </div>
           </CardFooter>
         </form>
-      </Card>
-      
-      {/* Demo Credentials */}
-      <Card className="border-dashed">
-        <CardHeader>
-          <CardTitle className="text-sm">Demo Credentials</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm">
-          <div>
-            <p className="font-medium">Staff Account:</p>
-            <p className="text-muted-foreground">Email: staff@example.com</p>
-            <p className="text-muted-foreground">Password: password123</p>
-          </div>
-          <div>
-            <p className="font-medium">Student Account:</p>
-            <p className="text-muted-foreground">Email: student@example.com</p>
-            <p className="text-muted-foreground">Password: password123</p>
-          </div>
-        </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   )
 }

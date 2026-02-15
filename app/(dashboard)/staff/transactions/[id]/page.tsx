@@ -195,7 +195,7 @@ export default function TransactionDetailPage({
 
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Account Status:</span>
-              <Badge variant={transaction.user.status === 'ACTIVE' ? 'default' : 'secondary'}>
+              <Badge variant={transaction.user.status === 'ACTIVE' ? 'success' : 'secondary'}>
                 {transaction.user.status}
               </Badge>
             </div>

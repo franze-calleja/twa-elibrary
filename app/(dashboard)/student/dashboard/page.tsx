@@ -23,40 +23,8 @@ export default function StudentDashboardPage() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="border-b bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <div>
-              <h1 className="text-xl font-bold">TWA E-Library</h1>
-              <p className="text-sm text-muted-foreground">Student Portal</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{user?.firstName} {user?.lastName}</p>
-              <p className="text-xs text-muted-foreground">{user?.studentId}</p>
-            </div>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => logout.mutate()}
-              disabled={logout.isPending}
-            >
-              {logout.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      {/* Header removed per design */}
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
@@ -122,15 +90,15 @@ export default function StudentDashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <Search className="h-8 w-8 mb-2" />
                 <span>Browse Books</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <BookOpen className="h-8 w-8 mb-2" />
                 <span>My Books</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <History className="h-8 w-8 mb-2" />
                 <span>Borrowing History</span>
               </Button>

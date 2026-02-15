@@ -10,9 +10,9 @@ import { Card, CardContent } from "@/components/ui/card"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 sticky top-0 z-50">
+      <nav className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export default function Home() {
               </span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
               Your Gateway to
               <span className="text-primary block mt-2">Knowledge & Learning</span>
             </h1>
@@ -93,9 +93,9 @@ export default function Home() {
           </div>
 
           {/* Hero Image/Illustration */}
-          <div className="relative hidden lg:block">
-            <div className="relative rounded-2xl bg-gradient-to-br from-primary/20 to-indigo-500/20 p-8 backdrop-blur-sm border border-primary/20">
-              <div className="aspect-square rounded-xl bg-white/50 dark:bg-gray-800/50 p-8 flex items-center justify-center">
+            <div className="relative hidden lg:block">
+            <div className="relative rounded-2xl bg-gradient-to-br from-primary/10 to-[color:var(--accent-subtle)] p-8 backdrop-blur-sm border border-primary/10">
+              <div className="aspect-square rounded-xl bg-card/50 p-8 flex items-center justify-center">
                 <Library className="h-48 w-48 text-primary animate-pulse" />
               </div>
               
@@ -195,7 +195,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm mt-20">
+      <footer className="border-t bg-background/50 backdrop-blur-sm mt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-600 dark:text-gray-400">
             <p>&copy; {new Date().getFullYear()} TWA E-Library. All rights reserved.</p>

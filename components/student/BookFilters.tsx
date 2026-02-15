@@ -50,8 +50,8 @@ export function BookFilters({
   const handleClearFilters = () => {
     setSearchInput('')
     onSearchChange('')
-    onCategoryChange('')
-    onStatusChange('')
+    onCategoryChange('all')
+    onStatusChange('all')
   }
 
   return (
@@ -106,7 +106,7 @@ export function BookFilters({
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
@@ -127,7 +127,7 @@ export function BookFilters({
                 <SelectValue placeholder="All Books" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Books</SelectItem>
+                <SelectItem value="all">All Books</SelectItem>
                 <SelectItem value="AVAILABLE">Available Only</SelectItem>
                 <SelectItem value="BORROWED">Currently Borrowed</SelectItem>
               </SelectContent>

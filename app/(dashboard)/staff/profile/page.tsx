@@ -1,25 +1,18 @@
 /**
- * Profile Page - Student
- * Complete profile management with stats, info, and edit forms
+ * Staff Profile Page - View Profile
  */
 
 'use client'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ProfileInfo, ProfileStats, EditProfileForm, ChangePasswordDialog } from '@/components/profile'
+import { ProfileInfo, EditProfileForm, ChangePasswordDialog } from '@/components/profile'
 import { useProfile } from '@/hooks/useAccount'
-import { Separator } from '@/components/ui/separator'
 import { User, Settings, Shield, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export default function ProfilePage() {
+export default function StaffProfilePage() {
   const { data: profile, isLoading, error } = useProfile()
-
-  // Debug logging
-  console.log('[ProfilePage] Profile data:', profile)
-  console.log('[ProfilePage] Loading:', isLoading)
-  console.log('[ProfilePage] Error:', error)
 
   // Show loading state
   if (isLoading) {
@@ -89,7 +82,6 @@ export default function ProfilePage() {
         {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-4">
           <ProfileInfo />
-          <ProfileStats />
         </TabsContent>
 
         {/* Edit Profile Tab */}

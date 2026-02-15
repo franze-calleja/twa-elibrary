@@ -162,7 +162,7 @@ export default function ScanBookPage() {
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2 mb-3">
-                  <Badge variant={book.status === 'AVAILABLE' ? 'default' : 'secondary'}>
+                  <Badge variant={book.status === 'AVAILABLE' ? 'success' : 'secondary'}>
                     {book.status}
                   </Badge>
                   {book.availableQuantity > 0 ? (

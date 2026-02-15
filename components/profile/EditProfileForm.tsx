@@ -5,10 +5,10 @@
 
 'use client'
 
-import { useState } from 'react'
+import { } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useUpdateProfile } from '@/hooks/useAccount'
+import { useUpdateProfile, useProfile } from '@/hooks/useAccount'
 import { updateProfileSchema, type UpdateProfileInput } from '@/lib/validation'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -19,18 +19,17 @@ import { Loader2 } from 'lucide-react'
 
 interface EditProfileFormProps {
   initialPhone?: string | null
-  initialAvatar?: string | null
 }
 
-export function EditProfileForm({ initialPhone, initialAvatar }: EditProfileFormProps) {
+export function EditProfileForm({ initialPhone }: EditProfileFormProps) {
   const { toast } = useToast()
   const updateProfile = useUpdateProfile()
+  const { data: profile } = useProfile()
 
   const form = useForm<UpdateProfileInput>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      phone: initialPhone || '',
-      avatar: initialAvatar || ''
+      phone: initialPhone || ''
     }
   })
 
@@ -54,7 +53,7 @@ export function EditProfileForm({ initialPhone, initialAvatar }: EditProfileForm
   }
 
   return (
-    <Card>
+    <Card className="border border-slate-200 shadow-sm">
       <CardHeader>
         <CardTitle>Edit Profile</CardTitle>
         <CardDescription>Update your contact information and avatar</CardDescription>
@@ -74,6 +73,7 @@ export function EditProfileForm({ initialPhone, initialAvatar }: EditProfileForm
                       placeholder="+639171234567" 
                       {...field} 
                       value={field.value || ''}
+                      className="border border-slate-200 focus-visible:border-[#f59e0b] focus-visible:ring-[#f59e0b]/20"
                     />
                   </FormControl>
                   <FormDescription>
@@ -84,45 +84,21 @@ export function EditProfileForm({ initialPhone, initialAvatar }: EditProfileForm
               )}
             />
 
-            {/* Avatar URL */}
-            <FormField
-              control={form.control}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Avatar URL</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="https://example.com/avatar.jpg" 
-                      {...field} 
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    URL to your profile picture (optional)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Preview Avatar */}
-            {form.watch('avatar') && (
-              <div className="space-y-2">
-                <FormLabel>Preview</FormLabel>
-                <div className="flex items-center gap-4">
-                  <img
-                    src={form.watch('avatar') || ''}
-                    alt="Avatar preview"
-                    className="h-16 w-16 rounded-full object-cover border-2 border-border"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://ui-avatars.com/api/?name=User'
-                    }}
+            {/* Email (read-only) */}
+            <div>
+              <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                  <Input
+                    value={profile?.email || ''}
+                    readOnly
+                    disabled
+                    className="border border-slate-200 bg-slate-50"
                   />
-                  <p className="text-sm text-muted-foreground">Avatar preview</p>
-                </div>
-              </div>
-            )}
+                </FormControl>
+                <FormDescription>Your account email (cannot be changed here)</FormDescription>
+              </FormItem>
+            </div>
           </CardContent>
 
           <CardFooter className="flex justify-between">

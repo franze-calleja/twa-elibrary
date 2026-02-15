@@ -24,7 +24,7 @@ export function StudentBookCard({ book, onViewDetails }: StudentBookCardProps) {
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'AVAILABLE':
-        return 'default'
+        return 'success'
       case 'BORROWED':
         return 'secondary'
       case 'RESERVED':
@@ -44,14 +44,14 @@ export function StudentBookCard({ book, onViewDetails }: StudentBookCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow group">
       <div className="flex gap-3 p-3">
         {/* Book Cover - Compact */}
-        <div className="relative w-20 h-28 shrink-0 overflow-hidden rounded-md bg-muted">
+        <div className="relative w-32 h-44 shrink-0 overflow-hidden rounded-md bg-muted">
           {book.coverImage ? (
             <Image
               src={book.coverImage}
               alt={book.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="80px"
+              sizes="128px"
               onError={(e) => {
                 const target = e.target as HTMLImageElement
                 target.style.display = 'none'
@@ -59,7 +59,7 @@ export function StudentBookCard({ book, onViewDetails }: StudentBookCardProps) {
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
-              <BookOpen className="h-8 w-8 text-muted-foreground" />
+              <BookOpen className="h-12 w-12 text-muted-foreground" />
             </div>
           )}
         </div>

@@ -29,6 +29,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Global top accent line removed */}
+
         <QueryProvider>
           {children}
         </QueryProvider>
