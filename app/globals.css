@@ -49,71 +49,73 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: #ffffff;
+  --foreground: #0f172a; /* slate-900 */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #059669; /* emerald-600 */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9; /* light slate */
+  --secondary-foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #f59e0b; /* marigold / amber-500 */
+  --accent-foreground: #000000;
+  --accent-subtle: rgba(245,158,11,0.12);
+  --destructive: #dc2626;
+  --border: #e6eef6;
+  --input: #f1f5f9;
+  --ring: #a7f3d0; /* soft emerald ring */
+  --chart-1: #10b981;
+  --chart-2: #f59e0b;
+  --chart-3: #60a5fa;
+  --chart-4: #f97316;
+  --chart-5: #facc15;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #059669;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f59e0b;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #eef2ff;
+  --sidebar-ring: #bbf7d0;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #04221a; /* dark emerald */
+  --foreground: #e6f9ef;
+  --card: #022f27; /* deep emerald card */
+  --card-foreground: #e6f9ef;
+  --popover: #022f27;
+  --popover-foreground: #e6f9ef;
+  --primary: #34d399; /* emerald-400 */
+  --primary-foreground: #052e16;
+  --secondary: #0b1220;
+  --secondary-foreground: #e6f9ef;
+  --muted: #0b1220;
+  --muted-foreground: #94a3b8;
+  --accent: #f59e0b;
+  --accent-foreground: #000000;
+  --accent-subtle: rgba(245,158,11,0.12);
+  --destructive: #fca5a5;
+  --border: rgba(255,255,255,0.06);
+  --input: rgba(255,255,255,0.06);
+  --ring: #064e3b;
+  --chart-1: #10b981;
+  --chart-2: #f59e0b;
+  --chart-3: #60a5fa;
+  --chart-4: #f97316;
+  --chart-5: #facc15;
+  --sidebar: #022f27; /* deep emerald */
+  --sidebar-foreground: #e6f9ef;
+  --sidebar-primary: #10b981; /* emerald-500 */
+  --sidebar-primary-foreground: #052e16;
+  --sidebar-accent: #f59e0b;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: rgba(255,255,255,0.06);
+  --sidebar-ring: #064e3b;
 }
 
 @layer base {
@@ -123,4 +125,76 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Hover accent overrides: make hover backgrounds/borders use the subtle yellow */
+[class*="hover:bg-accent"]:hover,
+a[class*="hover:bg-accent"]:hover,
+[class*="hover:bg-accent/"]:hover {
+  background-color: var(--accent-subtle) !important;
+}
+
+.group:hover [class*="group-hover:bg-accent"],
+[class*="group-hover:bg-accent"] {
+  background-color: var(--accent-subtle) !important;
+}
+
+[class*="hover:border-accent"]:hover,
+.group:hover [class*="group-hover:border-accent"] {
+  border-color: var(--accent-subtle) !important;
+}
+
+/* Also ensure anchor-specific variant selectors get the subtle hover */
+a[class*="[a&]:hover:bg-accent"]:hover,
+a[class*="[a&]:hover:bg-accent"]:hover * {
+  background-color: var(--accent-subtle) !important;
+}
+
+/* More specific Tailwind-generated selector overrides */
+.hover\:bg-accent:hover,
+.hover\:bg-accent\/50:hover,
+.dark .dark\:hover\:bg-accent\/50:hover,
+.group:hover .group-hover\:bg-accent,
+.group-hover\:bg-accent:hover,
+.bg-accent:hover,
+a.\[a\&\]\:hover\:bg-accent:hover {
+  background-color: var(--accent-subtle) !important;
+}
+
+/* Ensure text color remains legible when we apply subtle background */
+.hover\:text-accent-foreground:hover,
+.group-hover\:text-accent-foreground:hover,
+.text-accent-foreground:hover {
+  color: var(--accent-foreground) !important;
+}
+
+/* removed global h2 underline - headings remain unstyled here */
+
+/* Override any heading pseudo-element decorations (ensure no accent bars) */
+h1::after,
+h2::after,
+h3::after {
+  display: none !important;
+  content: none !important;
+}
+
+h1, h2, h3 {
+  padding-bottom: 0 !important;
+}
+
+/* Hide table elements inside main containers/cards when requested */
+.container table,
+.container thead,
+.container tbody,
+.container tr,
+.container th,
+.container td,
+.card table,
+.card thead,
+.card tbody,
+.card tr,
+.card th,
+.card td,
+[role="table"] {
+  display: none !important;
 }

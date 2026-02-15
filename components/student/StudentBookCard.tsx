@@ -24,7 +24,7 @@ export function StudentBookCard({ book, onViewDetails }: StudentBookCardProps) {
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'AVAILABLE':
-        return 'default'
+        return 'success'
       case 'BORROWED':
         return 'secondary'
       case 'RESERVED':

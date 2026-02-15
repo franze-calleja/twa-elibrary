@@ -78,7 +78,7 @@ export default function BooksPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'AVAILABLE':
-        return 'default'
+        return 'success'
       case 'BORROWED':
         return 'secondary'
       case 'RESERVED':
@@ -116,201 +116,199 @@ export default function BooksPage() {
         </Button>
       </div>
       
-      <Card className="p-6">
-        {/* Search and Filters */}
-        <div className="space-y-4 mb-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by title, author, ISBN, or barcode..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value)
-                  setPage(1)
-                }}
-                className="pl-10"
-              />
-            </div>
-            
-            {mounted && (
-              <>
-                <Select value={statusFilter} onValueChange={(value) => {
-                  setStatusFilter(value)
-                  setPage(1)
-                }}>
-                  <SelectTrigger className="w-full sm:w-[180px]">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value=" ">All Statuses</SelectItem>
-                    <SelectItem value="AVAILABLE">Available</SelectItem>
-                    <SelectItem value="BORROWED">Borrowed</SelectItem>
-                    <SelectItem value="RESERVED">Reserved</SelectItem>
-                    <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
-                    <SelectItem value="LOST">Lost</SelectItem>
-                    <SelectItem value="DAMAGED">Damaged</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <Select value={categoryFilter} onValueChange={(value) => {
-                  setCategoryFilter(value)
-                  setPage(1)
-                }}>
-                  <SelectTrigger className="w-full sm:w-[180px]">
-                    <SelectValue placeholder="Filter by category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value=" ">All Categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </>
-            )}
-            
-            {hasFilters && (
-              <Button variant="ghost" size="icon" onClick={clearFilters}>
-                <X className="h-4 w-4" />
-              </Button>
-            )}
+      {/* Search, filters and table rendered directly on the page (removed Card container) */}
+      <div className="space-y-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by title, author, ISBN, or barcode..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setPage(1)
+              }}
+              className="pl-10"
+            />
           </div>
-        </div>
-        
-        {/* Table */}
-        {isLoading ? (
-          <div className="flex items-center justify-center p-8">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : books.length === 0 ? (
-          <div className="text-center py-12">
-            <BookOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No books found</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              {hasFilters ? 'Try adjusting your filters' : 'Add your first book to get started'}
-            </p>
-            {!hasFilters && (
-              <Button onClick={() => setShowCreateDialog(true)}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Book
-              </Button>
-            )}
-          </div>
-        ) : (
-          <>
-            <div className="rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Barcode</TableHead>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Author</TableHead>
-                    <TableHead>Categories</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Available</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {books.map((book: any) => (
-                    <TableRow key={book.id}>
-                      <TableCell className="font-mono text-sm">{book.barcode}</TableCell>
-                      <TableCell className="font-medium max-w-[200px] truncate">
-                        {book.title}
-                      </TableCell>
-                      <TableCell className="max-w-[150px] truncate">{book.author}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {book.categories.slice(0, 2).map((bc: any) => (
-                            <Badge key={bc.categoryId} variant="outline" className="text-xs">
-                              {bc.category.name}
-                            </Badge>
-                          ))}
-                          {book.categories.length > 2 && (
-                            <Badge key="more-categories" variant="outline" className="text-xs">
-                              +{book.categories.length - 2}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={getStatusColor(book.status)}>
-                          {book.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {book.availableQuantity}/{book.quantity}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {book.location || '-'}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button asChild variant="ghost" size="sm">
-                            <Link href={`/staff/books/${book.id}`}>
-                              <Eye className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => setEditingBook(book)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => setDeletingBook(book)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+
+          {mounted && (
+            <>
+              <Select value={statusFilter} onValueChange={(value) => {
+                setStatusFilter(value)
+                setPage(1)
+              }}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=" ">All Statuses</SelectItem>
+                  <SelectItem value="AVAILABLE">Available</SelectItem>
+                  <SelectItem value="BORROWED">Borrowed</SelectItem>
+                  <SelectItem value="RESERVED">Reserved</SelectItem>
+                  <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                  <SelectItem value="LOST">Lost</SelectItem>
+                  <SelectItem value="DAMAGED">Damaged</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={categoryFilter} onValueChange={(value) => {
+                setCategoryFilter(value)
+                setPage(1)
+              }}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=" ">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
                   ))}
-                </TableBody>
-              </Table>
-            </div>
-            
-            {/* Pagination */}
-            {pagination && pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6">
-                <p className="text-sm text-muted-foreground">
-                  Showing {books.length} of {pagination.total} books
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(p => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                  >
-                    Previous
-                  </Button>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">
-                      Page {page} of {pagination.totalPages}
-                    </span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
-                    disabled={page === pagination.totalPages}
-                  >
-                    Next
-                  </Button>
+                </SelectContent>
+              </Select>
+            </>
+          )}
+
+          {hasFilters && (
+            <Button variant="ghost" size="icon" onClick={clearFilters}>
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Table area (now directly on page) */}
+      {isLoading ? (
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : books.length === 0 ? (
+        <div className="text-center py-12">
+          <BookOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No books found</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            {hasFilters ? 'Try adjusting your filters' : 'Add your first book to get started'}
+          </p>
+          {!hasFilters && (
+            <Button onClick={() => setShowCreateDialog(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Book
+            </Button>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Barcode</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead>Categories</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Available</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {books.map((book: any) => (
+                  <TableRow key={book.id}>
+                    <TableCell className="font-mono text-sm">{book.barcode}</TableCell>
+                    <TableCell className="font-medium max-w-[200px] truncate">
+                      {book.title}
+                    </TableCell>
+                    <TableCell className="max-w-[150px] truncate">{book.author}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {book.categories.slice(0, 2).map((bc: any) => (
+                          <Badge key={bc.categoryId} variant="outline" className="text-xs">
+                            {bc.category.name}
+                          </Badge>
+                        ))}
+                        {book.categories.length > 2 && (
+                          <Badge key="more-categories" variant="outline" className="text-xs">
+                            +{book.categories.length - 2}
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={getStatusColor(book.status)}>
+                        {book.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {book.availableQuantity}/{book.quantity}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {book.location || '-'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button asChild variant="ghost" size="sm">
+                          <Link href={`/staff/books/${book.id}`}>
+                            <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => setEditingBook(book)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => setDeletingBook(book)}
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+          {pagination && pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between mt-6">
+              <p className="text-sm text-muted-foreground">
+                Showing {books.length} of {pagination.total} books
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </Button>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">
+                    Page {page} of {pagination.totalPages}
+                  </span>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
+                  disabled={page === pagination.totalPages}
+                >
+                  Next
+                </Button>
               </div>
-            )}
-          </>
-        )}
-      </Card>
+            </div>
+          )}
+        </>
+      )}
       
       {/* Create Book Dialog */}
       <BookFormDialog

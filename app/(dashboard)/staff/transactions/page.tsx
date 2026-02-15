@@ -89,21 +89,19 @@ export default function TransactionsPage() {
         {/* Pending Approvals Tab */}
         <TabsContent value="pending" className="space-y-4">
           {pendingLoading ? (
-            <Card>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex justify-between items-center">
-                      <div className="space-y-2 flex-1">
-                        <Skeleton className="h-5 w-3/4" />
-                        <Skeleton className="h-4 w-1/2" />
-                      </div>
-                      <Skeleton className="h-9 w-24" />
+            <div className="p-6">
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex justify-between items-center">
+                    <div className="space-y-2 flex-1">
+                      <Skeleton className="h-5 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <Skeleton className="h-9 w-24" />
+                  </div>
+                ))}
+              </div>
+            </div>
           ) : pendingTransactions.length === 0 ? (
             <Alert>
               <CheckCircle className="h-4 w-4" />
@@ -112,11 +110,11 @@ export default function TransactionsPage() {
               </AlertDescription>
             </Alert>
           ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle>Requests Awaiting Approval</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div>
+              <div className="mb-4">
+                <h3 className="text-lg font-medium">Requests Awaiting Approval</h3>
+              </div>
+              <div>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -167,67 +165,66 @@ export default function TransactionsPage() {
                     ))}
                   </TableBody>
                 </Table>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </TabsContent>
 
         {/* All Transactions Tab */}
         <TabsContent value="all" className="space-y-4">
           {/* Filters */}
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex flex-col md:flex-row gap-4">
-                {/* Search */}
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by book title, student name, or ID..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
-                  />
-                </div>
-
-                {/* Status Filter */}
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full md:w-[180px]">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="PENDING">Pending</SelectItem>
-                    <SelectItem value="ACTIVE">Active</SelectItem>
-                    <SelectItem value="RETURNED">Returned</SelectItem>
-                    <SelectItem value="OVERDUE">Overdue</SelectItem>
-                    <SelectItem value="REJECTED">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
+          <div className="p-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Search */}
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by book title, student name, or ID..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
               </div>
-            </CardContent>
-          </Card>
+
+              {/* Status Filter */}
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full md:w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="ACTIVE">Active</SelectItem>
+                  <SelectItem value="RETURNED">Returned</SelectItem>
+                  <SelectItem value="OVERDUE">Overdue</SelectItem>
+                  <SelectItem value="REJECTED">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
           {/* Transactions Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle>All Transactions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {allLoading ? (
-                <div className="space-y-2">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <Skeleton key={i} className="h-12 w-full" />
-                  ))}
-                </div>
-              ) : allTransactions.length === 0 ? (
-                <Alert>
-                  <BookOpen className="h-4 w-4" />
-                  <AlertDescription>
-                    No transactions found matching your filters.
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <>
+          <div>
+            <div className="mb-4">
+              <h3 className="text-lg font-medium">All Transactions</h3>
+            </div>
+
+            {allLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Skeleton key={i} className="h-12 w-full" />
+                ))}
+              </div>
+            ) : allTransactions.length === 0 ? (
+              <Alert>
+                <BookOpen className="h-4 w-4" />
+                <AlertDescription>
+                  No transactions found matching your filters.
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <>
+                <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -282,39 +279,39 @@ export default function TransactionsPage() {
                       ))}
                     </TableBody>
                   </Table>
+                </div>
 
-                  {/* Pagination */}
-                  {pagination && pagination.totalPages > 1 && (
-                    <div className="flex items-center justify-between mt-4">
-                      <p className="text-sm text-muted-foreground">
-                        Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
-                        {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
-                        {pagination.total} transactions
-                      </p>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                          disabled={pagination.page === 1}
-                        >
-                          Previous
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(p => p + 1)}
-                          disabled={pagination.page === pagination.totalPages}
-                        >
-                          Next
-                        </Button>
-                      </div>
+                {/* Pagination */}
+                {pagination && pagination.totalPages > 1 && (
+                  <div className="flex items-center justify-between mt-4">
+                    <p className="text-sm text-muted-foreground">
+                      Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+                      {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
+                      {pagination.total} transactions
+                    </p>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={pagination.page === 1}
+                      >
+                        Previous
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(p => p + 1)}
+                        disabled={pagination.page === pagination.totalPages}
+                      >
+                        Next
+                      </Button>
                     </div>
-                  )}
-                </>
-              )}
-            </CardContent>
-          </Card>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
     </div>

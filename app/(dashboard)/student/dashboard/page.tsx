@@ -23,7 +23,7 @@ export default function StudentDashboardPage() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -122,15 +122,15 @@ export default function StudentDashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <Search className="h-8 w-8 mb-2" />
                 <span>Browse Books</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <BookOpen className="h-8 w-8 mb-2" />
                 <span>My Books</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <History className="h-8 w-8 mb-2" />
                 <span>Borrowing History</span>
               </Button>

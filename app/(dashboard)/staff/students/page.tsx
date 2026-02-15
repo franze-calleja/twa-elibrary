@@ -578,34 +578,33 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
         </DialogContent>
       </Dialog>
       
-      <Card className="p-6">
-        {/* Search */}
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name, email, or student ID..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setPage(1)
-              }}
-              className="pl-10"
-            />
-          </div>
+      {/* Search and table rendered directly on page (removed Card wrapper) */}
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by name, email, or student ID..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              setPage(1)
+            }}
+            className="pl-10"
+          />
         </div>
-        
-        {/* Table */}
-        {isLoading ? (
-          <div className="flex items-center justify-center p-8">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : users.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No students found</p>
-          </div>
-        ) : (
-          <>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : users.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No students found</p>
+        </div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -628,7 +627,7 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                     <TableCell>{student.program}</TableCell>
                     <TableCell>{student.yearLevel}</TableCell>
                     <TableCell>
-                      <Badge variant={student.status === 'ACTIVE' ? 'default' : 'secondary'}>
+                      <Badge variant={student.status === 'ACTIVE' ? 'success' : 'secondary'}>
                         {student.status}
                       </Badge>
                     </TableCell>
@@ -644,36 +643,36 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                 ))}
               </TableBody>
             </Table>
-            
-            {/* Pagination */}
-            {pagination && pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between mt-6">
-                <p className="text-sm text-muted-foreground">
-                  Showing {users.length} of {pagination.total} students
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(p => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
-                    disabled={page === pagination.totalPages}
-                  >
-                    Next
-                  </Button>
-                </div>
+          </div>
+
+          {/* Pagination */}
+          {pagination && pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between mt-6">
+              <p className="text-sm text-muted-foreground">
+                Showing {users.length} of {pagination.total} students
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
+                  disabled={page === pagination.totalPages}
+                >
+                  Next
+                </Button>
               </div>
-            )}
-          </>
-        )}
-      </Card>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

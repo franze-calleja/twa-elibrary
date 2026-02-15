@@ -5,14 +5,13 @@
 
 'use client'
 
-import { useAuth, useLogout } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Users, FileText, LogOut, Loader2 } from 'lucide-react'
+import { BookOpen, Users, FileText, Loader2 } from 'lucide-react'
 
 export default function StaffDashboardPage() {
   const { user, isLoading } = useAuth()
-  const logout = useLogout()
   
   if (isLoading) {
     return (
@@ -23,40 +22,8 @@ export default function StaffDashboardPage() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="border-b bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <div>
-              <h1 className="text-xl font-bold">TWA E-Library</h1>
-              <p className="text-sm text-muted-foreground">Staff Dashboard</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{user?.firstName} {user?.lastName}</p>
-              <p className="text-xs text-muted-foreground">{user?.email}</p>
-            </div>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => logout.mutate()}
-              disabled={logout.isPending}
-            >
-              {logout.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-background">
+      {/* Header removed (moved to sidebar) */}
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
@@ -67,7 +34,7 @@ export default function StaffDashboardPage() {
               Welcome back, {user?.firstName}!
             </h2>
             <p className="text-muted-foreground mt-2">
-              Here's what's happening in your library today.
+              Heres whats happening in your library today.
             </p>
           </div>
           
@@ -122,19 +89,19 @@ export default function StaffDashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <BookOpen className="h-8 w-8 mb-2" />
                 <span>Add New Book</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <Users className="h-8 w-8 mb-2" />
                 <span>Register Student</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <FileText className="h-8 w-8 mb-2" />
                 <span>Process Loan</span>
               </Button>
-              <Button className="h-auto flex-col py-6" variant="outline">
+              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
                 <FileText className="h-8 w-8 mb-2" />
                 <span>Process Return</span>
               </Button>

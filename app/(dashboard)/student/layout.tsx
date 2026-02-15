@@ -75,7 +75,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-primary/20 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
