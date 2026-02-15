@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
 import { Eye, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { TransactionWithDetails } from '@/types'
 
@@ -112,7 +111,6 @@ export function BorrowingHistoryTable({ transactions, isLoading }: BorrowingHist
                 <TableHead>Due Date</TableHead>
                 <TableHead>Returned</TableHead>
                 <TableHead>Renewals</TableHead>
-                <TableHead>Fine</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -120,30 +118,15 @@ export function BorrowingHistoryTable({ transactions, isLoading }: BorrowingHist
               {paginatedTransactions.map((transaction) => (
                 <TableRow key={transaction.id}>
                   <TableCell>
-                    <div className="flex items-center space-x-3">
-                      {transaction.book.coverImage ? (
-                        <Image
-                          src={transaction.book.coverImage}
-                          alt={transaction.book.title}
-                          width={40}
-                          height={60}
-                          className="rounded object-cover"
-                        />
-                      ) : (
-                        <div className="w-10 h-15 bg-muted rounded flex items-center justify-center">
-                          <span className="text-xs text-muted-foreground">No img</span>
-                        </div>
-                      )}
-                      <div>
-                        <Link 
-                          href={`/staff/books/${transaction.book.id}`}
-                          className="font-medium hover:underline line-clamp-1"
-                        >
-                          {transaction.book.title}
-                        </Link>
-                        <p className="text-sm text-muted-foreground">{transaction.book.author}</p>
-                        <p className="text-xs text-muted-foreground">{transaction.book.barcode}</p>
-                      </div>
+                    <div>
+                      <Link 
+                        href={`/staff/books/${transaction.book.id}`}
+                        className="font-medium hover:underline line-clamp-1"
+                      >
+                        {transaction.book.title}
+                      </Link>
+                      <p className="text-sm text-muted-foreground">{transaction.book.author}</p>
+                      <p className="text-xs text-muted-foreground">{transaction.book.barcode}</p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -185,21 +168,6 @@ export function BorrowingHistoryTable({ transactions, isLoading }: BorrowingHist
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">{transaction.renewalCount}</span>
-                  </TableCell>
-                  <TableCell>
-                    {transaction.fine ? (
-                      <div>
-                        <div className="text-sm font-medium">₱{Number(transaction.fine.amount).toFixed(2)}</div>
-                        <Badge 
-                          variant={transaction.fine.status === 'PAID' ? 'secondary' : 'destructive'}
-                          className="text-xs"
-                        >
-                          {transaction.fine.status}
-                        </Badge>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">-</span>
-                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <Link href={`/staff/transactions/${transaction.id}`}>
