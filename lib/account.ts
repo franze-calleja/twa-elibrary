@@ -141,14 +141,22 @@ export function getAvatarUrl(profile: UserProfile | null): string {
 
 /**
  * Format year level display
+ * Handles both college years (1-4) and grade levels (7-12)
  */
 export function formatYearLevel(yearLevel: number | null): string {
   if (!yearLevel) return 'N/A'
   
+  // Grade 7-12 (High School)
+  if (yearLevel >= 7 && yearLevel <= 12) {
+    return `Grade ${yearLevel}`
+  }
+  
+  // Year 1-4 (College)
   const suffixes: Record<number, string> = {
     1: 'st',
     2: 'nd',
-    3: 'rd'
+    3: 'rd',
+    4: 'th'
   }
   
   const suffix = suffixes[yearLevel] || 'th'

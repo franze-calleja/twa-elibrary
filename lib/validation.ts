@@ -142,8 +142,8 @@ export const studentPreRegisterSchema = z.object({
     .max(100),
   yearLevel: z.number()
     .int()
-    .min(1, 'Year level must be at least 1')
-    .max(6, 'Year level must not exceed 6'),
+    .min(1, 'Year/Grade level must be at least 1')
+    .max(12, 'Year/Grade level must not exceed 12'),
   section: z.string()
     .max(50, 'Section must not exceed 50 characters')
     .optional()

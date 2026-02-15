@@ -186,7 +186,8 @@ export default function StudentsPage() {
   const downloadTemplate = () => {
     const csv = `email,firstName,lastName,middleName,studentId,program,yearLevel,section,phone,borrowingLimit
 john.doe@example.com,John,Doe,Michael,2024-00001,BS Computer Science,1,A,09123456789,3
-jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,B,09987654321,3`
+jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,B,09987654321,3
+peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,09876543210,3`
     
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
@@ -281,7 +282,9 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,B,0998
                 <Alert>
                   <FileText className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel, section (optional), phone (optional), borrowingLimit (optional)
+                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel (1-12), section (optional), phone (optional), borrowingLimit (optional)
+                    <br />
+                    <span className="text-xs">Year 1-4 for college, Grade 7-12 for high school</span>
                   </AlertDescription>
                 </Alert>
                 
@@ -477,13 +480,16 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,B,0998
                       name="yearLevel"
                       type="number"
                       min="1"
-                      max="6"
-                      placeholder="e.g., 1, 2, 3..."
+                      max="12"
+                      placeholder="e.g., 7-12 (Grade) or 1-4 (Year)"
                       value={preRegisterForm.yearLevel}
                       onChange={handlePreRegisterChange}
                       required
                       disabled={preRegister.isPending}
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Grade 7-12 for high school, Year 1-4 for college
+                    </p>
                   </div>
                   
                   <div className="space-y-2">
