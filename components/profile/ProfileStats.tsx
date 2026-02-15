@@ -21,7 +21,7 @@ export function ProfileStats() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {/* Active Loans */}
-      <Card>
+      <Card className="border border-slate-200 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Active Loans</CardTitle>
           <Book className="h-4 w-4 text-muted-foreground" />
@@ -38,7 +38,7 @@ export function ProfileStats() {
       </Card>
 
       {/* Unpaid Fines */}
-      <Card>
+      <Card className="border border-slate-200 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Unpaid Fines</CardTitle>
           <AlertCircle className="h-4 w-4 text-muted-foreground" />
@@ -56,7 +56,7 @@ export function ProfileStats() {
       </Card>
 
       {/* Borrowing Limit */}
-      <Card>
+      <Card className="border border-slate-200 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Borrowing Limit</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -68,7 +68,7 @@ export function ProfileStats() {
       </Card>
 
       {/* Can Borrow */}
-      <Card>
+      <Card className="border border-slate-200 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Eligibility</CardTitle>
           <CheckCircle className="h-4 w-4 text-muted-foreground" />

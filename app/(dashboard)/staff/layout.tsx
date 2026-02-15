@@ -58,16 +58,6 @@ const navItems: NavItem[] = [
     icon: ArrowRightLeft
   },
   {
-    title: 'Fines',
-    href: '/staff/fines',
-    icon: DollarSign
-  },
-  {
-    title: 'Reports',
-    href: '/staff/reports',
-    icon: FileText
-  },
-  {
     title: 'Settings',
     href: '/staff/settings',
     icon: Settings
@@ -129,9 +119,11 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
           {/* Header */}
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2">
-              <Image src="/digital-library-seal.png" alt="Tayabas Digital Library" width={36} height={36} className="rounded-full object-cover" />
-              <span className={cn('font-bold text-lg transition-opacity', sidebarCollapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100')}>TWA E-Library</span>
-            </div>
+                {!sidebarCollapsed && (
+                  <Image src="/digital-library-seal.png" alt="Tayabas Digital Library" width={36} height={36} className="rounded-full object-cover" />
+                )}
+                <span className={cn('font-bold text-lg transition-opacity', sidebarCollapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100')}>TWA E-Library</span>
+              </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -211,7 +203,7 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
                 {showProfileMenu && (
                   <div className="absolute right-0 bottom-10 z-50 w-44 rounded-md bg-white border border-slate-200 shadow-md py-1">
-                    <a href="/student/profile" className="block px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground" onClick={() => setShowProfileMenu(false)}>View profile</a>
+                    <a href="/staff/profile" className="block px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground" onClick={() => setShowProfileMenu(false)}>View profile</a>
                     <button className="w-full text-left px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground" onClick={() => { setShowProfileMenu(false); handleLogout(); }}>Logout</button>
                   </div>
                 )}

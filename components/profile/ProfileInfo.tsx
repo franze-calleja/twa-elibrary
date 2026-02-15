@@ -20,6 +20,7 @@ import {
 } from '@/lib/account'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Mail, Phone, IdCard, GraduationCap, Calendar, BookOpen } from 'lucide-react'
+import { format } from 'date-fns'
 
 export function ProfileInfo() {
   const { data: profile, isLoading, error } = useProfile()
@@ -53,7 +54,7 @@ export function ProfileInfo() {
   }
 
   return (
-    <Card>
+    <Card className="border border-slate-200 shadow-sm">
       <CardHeader>
         <CardTitle>Profile Information</CardTitle>
         <CardDescription>Your personal details and account information</CardDescription>
@@ -61,14 +62,14 @@ export function ProfileInfo() {
       <CardContent className="space-y-6">
         {/* Avatar and Name Section */}
         <div className="flex items-center gap-4">
-          <Avatar className="h-20 w-20">
+          <Avatar className="h-20 w-20 bg-primary text-primary-foreground">
             <AvatarImage src={getAvatarUrl(profile)} alt={fullName} />
-            <AvatarFallback className="text-lg">{getUserInitials(profile)}</AvatarFallback>
+            <AvatarFallback className="text-lg text-primary-foreground">{getUserInitials(profile)}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h2 className="text-2xl font-bold">{fullName}</h2>
+            <h2 className="text-2xl font-bold text-primary">{fullName}</h2>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant={getStatusBadgeVariant(profile.status)}>
+              <Badge variant={getStatusBadgeVariant(profile.status)} className="bg-primary text-white">
                 {getStatusDisplayText(profile.status)}
               </Badge>
               <span className="text-sm text-muted-foreground">
@@ -78,7 +79,7 @@ export function ProfileInfo() {
           </div>
         </div>
 
-        {/* Details Grid */}
+        {/* Details Grid - staff vs student */}
         <div className="grid gap-4 md:grid-cols-2">
           {/* Email */}
           <div className="flex items-start gap-3">
@@ -102,49 +103,83 @@ export function ProfileInfo() {
             </div>
           </div>
 
-          {/* Student ID */}
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <IdCard className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">Student ID</p>
-              <p className="text-sm font-semibold">{profile.studentId || 'N/A'}</p>
-            </div>
-          </div>
+          {profile.role === 'STUDENT' ? (
+            <>
+              {/* Student-specific fields */}
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <IdCard className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Student ID</p>
+                  <p className="text-sm font-semibold">{profile.studentId || 'N/A'}</p>
+                </div>
+              </div>
 
-          {/* Program */}
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <GraduationCap className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">Program</p>
-              <p className="text-sm font-semibold">{profile.program || 'N/A'}</p>
-            </div>
-          </div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <GraduationCap className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Program</p>
+                  <p className="text-sm font-semibold">{profile.program || 'N/A'}</p>
+                </div>
+              </div>
 
-          {/* Year Level */}
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <Calendar className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">Year Level</p>
-              <p className="text-sm font-semibold">{formatYearLevel(profile.yearLevel)}</p>
-            </div>
-          </div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <Calendar className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Year Level</p>
+                  <p className="text-sm font-semibold">{formatYearLevel(profile.yearLevel)}</p>
+                </div>
+              </div>
 
-          {/* Borrowing Limit */}
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <BookOpen className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">Borrowing Limit</p>
-              <p className="text-sm font-semibold">{profile.borrowingLimit} books</p>
-            </div>
-          </div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Borrowing Limit</p>
+                  <p className="text-sm font-semibold">{profile.borrowingLimit} books</p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Staff/Admin fields */}
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <IdCard className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Role</p>
+                  <p className="text-sm font-semibold">System Administrator</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <Calendar className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Last Login</p>
+                  <p className="text-sm font-semibold">{profile.lastLoginAt ? format(new Date(profile.lastLoginAt), 'PPP p') : 'Never'}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">Account Created</p>
+                  <p className="text-sm font-semibold">{format(new Date(profile.createdAt), 'PPP')}</p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
