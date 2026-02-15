@@ -169,11 +169,13 @@ model Transaction {
   
   requestedDays     Int?              // Days requested by student
   
+  // TEMPORARILY DISABLED FIELDS (DB SYNC ISSUE - these don't exist in current database)
+  // approvedAt        DateTime?         // When staff approved the request
+  // rejectedAt        DateTime?         // When staff rejected the request
+  // rejectionReason   String?           // Reason for rejection
+  
   notes             String?           @db.Text
   processedBy       String?           // Staff user ID who processed the transaction
-  approvedAt        DateTime?         // When staff approved the request
-  rejectedAt        DateTime?         // When staff rejected the request
-  rejectionReason   String?           // Reason for rejection
   
   // Relations
   book              Book              @relation(fields: [bookId], references: [id])

@@ -72,31 +72,9 @@ export async function GET(
             borrowedAt: 'desc'
           }
         },
-        fines: {
-          where: {
-            status: 'UNPAID'
-          },
-          include: {
-            transaction: {
-              include: {
-                book: {
-                  select: {
-                    title: true,
-                    barcode: true,
-                  }
-                }
-              }
-            }
-          },
-          orderBy: {
-            issuedAt: 'desc'
-          }
-        },
         _count: {
           select: {
             transactions: true,
-            fines: true,
-            reservations: true,
           }
         }
       }
@@ -132,10 +110,7 @@ export async function GET(
     // Calculate statistics
     const stats = {
       activeLoans: user.transactions.length,
-      unpaidFines: user.fines.reduce((sum, fine) => sum + Number(fine.amount), 0),
       totalTransactions: user._count.transactions,
-      totalFines: user._count.fines,
-      totalReservations: user._count.reservations,
     }
 
     return NextResponse.json({
