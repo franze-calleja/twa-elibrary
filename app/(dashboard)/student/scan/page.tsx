@@ -148,7 +148,7 @@ export default function ScanBookPage() {
                     sizes="112px"
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                  <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
                     <BookOpen className="h-12 w-12 text-muted-foreground" />
                   </div>
                 )}

@@ -122,7 +122,7 @@ export default function TransactionDetailPage({
                     sizes="96px"
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                  <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/10 to-primary/5">
                     <BookOpen className="h-10 w-10 text-muted-foreground" />
                   </div>
                 )}
