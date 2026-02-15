@@ -100,7 +100,6 @@ export default function ProfilePage() {
         <TabsContent value="edit" className="space-y-4">
           <EditProfileForm
             initialPhone={profile?.phone}
-            initialAvatar={profile?.avatar}
           />
         </TabsContent>
 
