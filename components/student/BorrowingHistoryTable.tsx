@@ -14,33 +14,10 @@ import { Eye, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-interface Transaction {
-  id: string
-  type: string
-  status: string
-  borrowedAt: Date | string
-  dueDate: Date | string
-  returnedAt?: Date | string | null
-  renewalCount: number
-  requestedDays?: number | null
-  book: {
-    id: string
-    title: string
-    author: string
-    barcode: string
-    coverImage?: string | null
-  }
-  fine?: {
-    id: string
-    amount: number
-    status: string
-    reason: string
-  } | null
-}
+import type { TransactionWithDetails } from '@/types'
 
 interface BorrowingHistoryTableProps {
-  transactions: Transaction[]
+  transactions: TransactionWithDetails[]
   isLoading?: boolean
 }
 

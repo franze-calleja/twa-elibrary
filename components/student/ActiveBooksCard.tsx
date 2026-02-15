@@ -12,25 +12,11 @@ import { AlertCircle, Calendar } from 'lucide-react'
 import { format, differenceInDays } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Transaction, Book, Fine } from '@prisma/client'
 
-interface ActiveBook {
-  id: string
-  dueDate: Date | string
-  borrowedAt: Date | string
-  renewalCount: number
-  status: string
-  requestedDays?: number | null
-  book: {
-    id: string
-    title: string
-    author: string
-    barcode: string
-    coverImage?: string | null
-  }
-  fine?: {
-    amount: number
-    status: string
-  } | null
+interface ActiveBook extends Transaction {
+  book: Pick<Book, 'id' | 'title' | 'author' | 'barcode' | 'coverImage'>
+  fine?: Pick<Fine, 'amount' | 'status'> | null
 }
 
 interface ActiveBooksCardProps {
