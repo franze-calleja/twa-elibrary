@@ -139,15 +139,6 @@ export function ActiveBooksCard({ activeBooks }: ActiveBooksCardProps) {
                       {getDueDateBadge(transaction.dueDate, transaction.status)}
                     </div>
 
-                    {/* Duration */}
-                    {transaction.requestedDays && (
-                      <div className="flex items-center text-sm">
-                        <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-muted-foreground">Duration:</span>
-                        <span className="ml-2">{transaction.requestedDays} days</span>
-                      </div>
-                    )}
-
                     {/* Renewals */}
                     {transaction.renewalCount > 0 && (
                       <div className="text-xs text-muted-foreground">

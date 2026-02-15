@@ -110,7 +110,6 @@ export function BorrowingHistoryTable({ transactions, isLoading }: BorrowingHist
                 <TableHead>Status</TableHead>
                 <TableHead>Borrowed</TableHead>
                 <TableHead>Due Date</TableHead>
-                <TableHead>Duration</TableHead>
                 <TableHead>Returned</TableHead>
                 <TableHead>Renewals</TableHead>
                 <TableHead>Fine</TableHead>
@@ -169,13 +168,6 @@ export function BorrowingHistoryTable({ transactions, isLoading }: BorrowingHist
                     <div className="text-sm">
                       {format(new Date(transaction.dueDate), 'MMM dd, yyyy')}
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    {transaction.requestedDays ? (
-                      <span className="text-sm">{transaction.requestedDays} days</span>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">-</span>
-                    )}
                   </TableCell>
                   <TableCell>
                     {transaction.returnedAt ? (
