@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
         studentId: validated.studentId,
         program: validated.program,
         yearLevel: validated.yearLevel,
+        section: validated.section || null,
         phone: validated.phone || null,
         borrowingLimit: validated.borrowingLimit,
         role: UserRole.STUDENT,
@@ -67,6 +68,7 @@ export async function POST(request: NextRequest) {
         studentId: true,
         program: true,
         yearLevel: true,
+        section: true,
         status: true
       }
     })

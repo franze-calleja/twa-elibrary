@@ -144,6 +144,10 @@ export const studentPreRegisterSchema = z.object({
     .int()
     .min(1, 'Year level must be at least 1')
     .max(6, 'Year level must not exceed 6'),
+  section: z.string()
+    .max(50, 'Section must not exceed 50 characters')
+    .optional()
+    .or(z.literal('')),
   phone: z.string()
     .regex(/^[0-9]{10,15}$/, 'Invalid phone number')
     .optional()

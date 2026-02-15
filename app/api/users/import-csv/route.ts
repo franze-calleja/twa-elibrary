@@ -18,6 +18,7 @@ interface ImportStudent {
   studentId: string
   program: string
   yearLevel: number
+  section?: string
   phone?: string
   borrowingLimit?: number
 }
@@ -101,6 +102,7 @@ export async function POST(request: NextRequest) {
             studentId: validated.studentId,
             program: validated.program,
             yearLevel: validated.yearLevel,
+            section: validated.section || null,
             phone: validated.phone || null,
             borrowingLimit: validated.borrowingLimit || 3
           },

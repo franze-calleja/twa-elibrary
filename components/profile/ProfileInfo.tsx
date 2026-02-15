@@ -134,7 +134,10 @@ export function ProfileInfo() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Year Level</p>
-                  <p className="text-sm font-semibold">{formatYearLevel(profile.yearLevel)}</p>
+                  <p className="text-sm font-semibold">
+                    {formatYearLevel(profile.yearLevel)}
+                    {profile.section && ` - Section ${profile.section}`}
+                  </p>
                 </div>
               </div>
 

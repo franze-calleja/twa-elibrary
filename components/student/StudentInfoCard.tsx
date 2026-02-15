@@ -92,7 +92,9 @@ export function StudentInfoCard({ user }: StudentInfoCardProps) {
               <UserIcon className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
                 <p className="text-sm font-medium">Year Level</p>
-                <p className="text-sm text-muted-foreground">Year {user.yearLevel}</p>
+                <p className="text-sm text-muted-foreground">
+                  Year {user.yearLevel}{user.section ? ` - Section ${user.section}` : ''}
+                </p>
               </div>
             </div>
           )}

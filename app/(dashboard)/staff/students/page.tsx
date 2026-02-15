@@ -28,6 +28,7 @@ interface CSVStudent {
   studentId: string
   program: string
   yearLevel: number
+  section?: string
   phone?: string
   borrowingLimit?: number
 }
@@ -52,6 +53,7 @@ export default function StudentsPage() {
     studentId: '',
     program: '',
     yearLevel: 1,
+    section: '',
     phone: '',
     borrowingLimit: 3
   })
@@ -97,6 +99,7 @@ export default function StudentsPage() {
           studentId: '',
           program: '',
           yearLevel: 1,
+          section: '',
           phone: '',
           borrowingLimit: 3
         })
@@ -137,6 +140,7 @@ export default function StudentsPage() {
           studentId: row.studentId || '',
           program: row.program || '',
           yearLevel: parseInt(row.yearLevel) || 1,
+          section: row.section || '',
           phone: row.phone || '',
           borrowingLimit: parseInt(row.borrowingLimit) || 3
         })).filter(s => s.email && s.firstName && s.lastName && s.studentId)
@@ -180,9 +184,9 @@ export default function StudentsPage() {
   }
   
   const downloadTemplate = () => {
-    const csv = `email,firstName,lastName,middleName,studentId,program,yearLevel,phone,borrowingLimit
-john.doe@example.com,John,Doe,Michael,2024-00001,BS Computer Science,1,09123456789,3
-jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,09987654321,3`
+    const csv = `email,firstName,lastName,middleName,studentId,program,yearLevel,section,phone,borrowingLimit
+john.doe@example.com,John,Doe,Michael,2024-00001,BS Computer Science,1,A,09123456789,3
+jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,B,09987654321,3`
     
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
@@ -277,7 +281,7 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                 <Alert>
                   <FileText className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel, phone (optional), borrowingLimit (optional)
+                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel, section (optional), phone (optional), borrowingLimit (optional)
                   </AlertDescription>
                 </Alert>
                 
@@ -292,6 +296,7 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                           <TableHead>Email</TableHead>
                           <TableHead>Program</TableHead>
                           <TableHead>Year</TableHead>
+                          <TableHead>Section</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -304,6 +309,7 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                             <TableCell>{student.email}</TableCell>
                             <TableCell>{student.program}</TableCell>
                             <TableCell>{student.yearLevel}</TableCell>
+                            <TableCell>{student.section || '-'}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -450,14 +456,30 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                   </div>
                 </div>
                 
+                <div className="space-y-2">
+                  <Label htmlFor="program">Program / Course *</Label>
+                  <Input
+                    id="program"
+                    name="program"
+                    placeholder="e.g., BS Computer Science"
+                    value={preRegisterForm.program}
+                    onChange={handlePreRegisterChange}
+                    required
+                    disabled={preRegister.isPending}
+                  />
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="program">Program *</Label>
+                    <Label htmlFor="yearLevel">Year / Grade Level *</Label>
                     <Input
-                      id="program"
-                      name="program"
-                      placeholder="e.g., BS Computer Science"
-                      value={preRegisterForm.program}
+                      id="yearLevel"
+                      name="yearLevel"
+                      type="number"
+                      min="1"
+                      max="6"
+                      placeholder="e.g., 1, 2, 3..."
+                      value={preRegisterForm.yearLevel}
                       onChange={handlePreRegisterChange}
                       required
                       disabled={preRegister.isPending}
@@ -465,16 +487,13 @@ jane.smith@example.com,Jane,Smith,,2024-00002,BS Information Technology,2,099876
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="yearLevel">Year Level *</Label>
+                    <Label htmlFor="section">Section / Block</Label>
                     <Input
-                      id="yearLevel"
-                      name="yearLevel"
-                      type="number"
-                      min="1"
-                      max="6"
-                      value={preRegisterForm.yearLevel}
+                      id="section"
+                      name="section"
+                      placeholder="e.g., A, 1A, Block 1"
+                      value={preRegisterForm.section}
                       onChange={handlePreRegisterChange}
-                      required
                       disabled={preRegister.isPending}
                     />
                   </div>

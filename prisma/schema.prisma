@@ -69,6 +69,7 @@ model User {
   studentId         String?           @unique
   program           String?
   yearLevel         Int?
+  section           String?           // Section/Block (e.g., "A", "1A", "Block 1")
   borrowingLimit    Int               @default(3)
   
   // Timestamps

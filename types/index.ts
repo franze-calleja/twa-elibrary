@@ -178,6 +178,7 @@ export interface StudentFormData {
   studentId: string
   program: string
   yearLevel: number
+  section?: string
   phone?: string
   borrowingLimit: number
 }

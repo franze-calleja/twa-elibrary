@@ -18,6 +18,7 @@ export interface UserProfile {
   studentId: string | null
   program: string | null
   yearLevel: number | null
+  section: string | null
   borrowingLimit: number
   createdAt: string
   updatedAt: string
