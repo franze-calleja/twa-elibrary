@@ -4,7 +4,10 @@
  */
 
 import Link from "next/link"
-import { BookOpen, Library, Users, Clock, Shield, TrendingUp } from "lucide-react"
+import Image from "next/image"
+import { BookOpen, Users, Clock, Shield } from "lucide-react"
+import VerticalTicker from '@/components/VerticalTicker'
+import MotionWrapper from '@/components/MotionWrapper'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -12,13 +15,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="border-b bg-background/80 sticky top-0 z-50">
+        <MotionWrapper className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="rounded-lg bg-primary p-2">
-                <BookOpen className="h-6 w-6 text-primary-foreground" />
-              </div>
+            <div className="flex items-center gap-3">
+              <Image src="/digital-library-seal.png" alt="TWA Seal" width={48} height={48} className="rounded-full object-cover w-12 h-12" />
               <span className="text-xl font-bold text-gray-900 dark:text-white">
                 TWA E-Library
               </span>
@@ -36,14 +37,21 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </div>
+        </MotionWrapper>
       </nav>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="w-full relative overflow-hidden py-12 sm:py-20 lg:py-28">
+        {/* Background photo (grayscale, low opacity) */}
+        <div
+          aria-hidden
+          style={{ backgroundImage: `url('/library.jpg')` }}
+          className="absolute inset-0 bg-center bg-cover filter grayscale opacity-20 z-0"
+        />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Hero Content */}
-          <div className="text-center lg:text-left space-y-6 sm:space-y-8">
+          <MotionWrapper className="relative z-20 text-center md:-mt-30 lg:text-left space-y-6 sm:space-y-8">
             <div className="inline-block">
               <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
                 Welcome to Digital Library
@@ -51,9 +59,9 @@ export default function Home() {
             </div>
             
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
-              Your Gateway to
-              <span className="text-primary block mt-2">Knowledge & Learning</span>
-            </h1>
+                  Your Gateway to
+                  <VerticalTicker />
+                </h1>
             
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0">
               Access thousands of books, manage your borrowing, and explore a world of knowledge — all from one modern platform.
@@ -76,7 +84,7 @@ export default function Home() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-8 max-w-lg mx-auto lg:mx-0">
+            <MotionWrapper className="grid grid-cols-3 gap-4 pt-8 max-w-lg mx-auto lg:mx-0" delay={0.08}>
               <div className="text-center lg:text-left">
                 <div className="text-2xl sm:text-3xl font-bold text-primary">1000+</div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Books</div>
@@ -89,24 +97,40 @@ export default function Home() {
                 <div className="text-2xl sm:text-3xl font-bold text-primary">24/7</div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Access</div>
               </div>
-            </div>
+            </MotionWrapper>
+          </MotionWrapper>
+
+          {/* Mobile image (visible on small screens) */}
+          <div className="lg:hidden relative z-20 flex justify-center mt-6">
+            <Image
+              src="/student-model.png"
+              alt="Student holding books"
+              width={900}
+              height={900}
+              className="w-full max-w-sm h-auto object-contain"
+              priority
+            />
           </div>
 
-          {/* Hero Image/Illustration */}
-            <div className="relative hidden lg:block">
-            <div className="relative rounded-2xl bg-gradient-to-br from-primary/10 to-[color:var(--accent-subtle)] p-8 backdrop-blur-sm border border-primary/10">
-              <div className="aspect-square rounded-xl bg-card/50 p-8 flex items-center justify-center">
-                <Library className="h-48 w-48 text-primary animate-pulse" />
-              </div>
-              
-              {/* Floating Cards */}
-              <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 animate-bounce">
-                <BookOpen className="h-8 w-8 text-primary" />
-              </div>
-              <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 animate-bounce delay-100">
-                <TrendingUp className="h-8 w-8 text-green-500" />
-              </div>
+          {/* Hero Image/Illustration - student image displayed larger on wide screens */}
+          <MotionWrapper className="relative hidden lg:flex items-center justify-center lg:justify-end lg:pr-8 z-20" delay={0.12}>
+            {/* Decorative yellow circle behind the student image (large, solid) */}
+            <div
+              aria-hidden
+              className="absolute -right-20 -bottom-40 -translate-y-1/2 translate-x-1/4 w-72 h-72 md:w-[750px] md:h-[750px] rounded-full bg-[#f7de85] z-10"
+            />
+
+            <div className="relative -right-20 -bottom-10  z-10 w-full max-w-[1700px] h-auto">
+              <Image
+                src="/student-model.png"
+                alt="Student holding books"
+                width={1600}
+                height={1600}
+                className="w-full max-w-[1700px] h-auto object-contain lg:scale-110 xl:scale-125 lg:-mr-8 relative z-10"
+                priority
+              />
             </div>
+          </MotionWrapper>
           </div>
         </div>
       </section>
@@ -124,47 +148,53 @@ export default function Home() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Feature Cards */}
-          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
-            <CardContent className="pt-6 text-center space-y-4">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <BookOpen className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Vast Collection
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Access thousands of books across multiple categories and subjects
-              </p>
-            </CardContent>
-          </Card>
+          <MotionWrapper delay={0.08}>
+            <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
+              <CardContent className="pt-6 text-center space-y-4">
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Vast Collection
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Access thousands of books across multiple categories and subjects
+                </p>
+              </CardContent>
+            </Card>
+          </MotionWrapper>
 
-          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
-            <CardContent className="pt-6 text-center space-y-4">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Clock className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Easy Management
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Track your borrowings, due dates, and history all in one place
-              </p>
-            </CardContent>
-          </Card>
+          <MotionWrapper delay={0.12}>
+            <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
+              <CardContent className="pt-6 text-center space-y-4">
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Easy Management
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Track your borrowings, due dates, and history all in one place
+                </p>
+              </CardContent>
+            </Card>
+          </MotionWrapper>
 
-          <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
-            <CardContent className="pt-6 text-center space-y-4">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Secure & Reliable
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Your data is protected with industry-standard security measures
-              </p>
-            </CardContent>
-          </Card>
+          <MotionWrapper delay={0.16}>
+            <Card className="border-2 hover:border-yellow-300 transition-colors hover:bg-yellow-50 hover:shadow-lg">
+              <CardContent className="pt-6 text-center space-y-4">
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Secure & Reliable
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Your data is protected with industry-standard security measures
+                </p>
+              </CardContent>
+            </Card>
+          </MotionWrapper>
         </div>
       </section>
 
