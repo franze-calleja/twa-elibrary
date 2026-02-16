@@ -89,8 +89,8 @@ export default function StaffDashboardPage() {
     },
     {
       label: 'Total Fines',
-      value: parseFloat(stats.data.totalFines || '0'),
-      subtitle: `₱${parseFloat(stats.data.unpaidFines || '0').toFixed(2)} unpaid`,
+      value: Number(stats.data.totalFines || 0),
+      subtitle: `₱${Number(stats.data.unpaidFines || 0).toFixed(2)} unpaid`,
       icon: 'DollarSign'
     }
   ] : []
@@ -158,7 +158,7 @@ export default function StaffDashboardPage() {
             {/* Pending Requests */}
             <PendingRequestsCard 
               requests={pendingRequests.data?.pendingRequests || []}
-              total={pendingRequests.data?.total || 0}
+              total={pendingRequests.data?.pagination?.total || 0}
               isLoading={pendingRequests.isLoading}
             />
           </div>
