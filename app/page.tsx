@@ -41,10 +41,17 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="w-full relative overflow-hidden py-12 sm:py-20 lg:py-28">
+        {/* Background photo (grayscale, low opacity) */}
+        <div
+          aria-hidden
+          style={{ backgroundImage: `url('/library.jpg')` }}
+          className="absolute inset-0 bg-center bg-cover filter grayscale opacity-20 z-0"
+        />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Hero Content */}
-          <MotionWrapper className="text-center lg:text-left space-y-6 sm:space-y-8">
+          <MotionWrapper className="relative z-20 text-center md:-mt-30 lg:text-left space-y-6 sm:space-y-8">
             <div className="inline-block">
               <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
                 Welcome to Digital Library
@@ -93,15 +100,27 @@ export default function Home() {
             </MotionWrapper>
           </MotionWrapper>
 
+          {/* Mobile image (visible on small screens) */}
+          <div className="lg:hidden relative z-20 flex justify-center mt-6">
+            <Image
+              src="/student-model.png"
+              alt="Student holding books"
+              width={900}
+              height={900}
+              className="w-full max-w-sm h-auto object-contain"
+              priority
+            />
+          </div>
+
           {/* Hero Image/Illustration - student image displayed larger on wide screens */}
-          <MotionWrapper className="relative hidden lg:flex items-center justify-center lg:justify-end lg:pr-8" delay={0.12}>
+          <MotionWrapper className="relative hidden lg:flex items-center justify-center lg:justify-end lg:pr-8 z-20" delay={0.12}>
             {/* Decorative yellow circle behind the student image (large, solid) */}
             <div
               aria-hidden
-              className="absolute right-5 top-1/2 -translate-y-1/2 translate-x-1/4 w-72 h-72 md:w-[620px] md:h-[620px] rounded-full bg-[#f7de85] z-0"
+              className="absolute -right-20 -bottom-40 -translate-y-1/2 translate-x-1/4 w-72 h-72 md:w-[750px] md:h-[750px] rounded-full bg-[#f7de85] z-10"
             />
 
-            <div className="relative -right-20  z-10 w-full max-w-[1700px] h-auto">
+            <div className="relative -right-20 -bottom-10  z-10 w-full max-w-[1700px] h-auto">
               <Image
                 src="/student-model.png"
                 alt="Student holding books"
@@ -112,6 +131,7 @@ export default function Home() {
               />
             </div>
           </MotionWrapper>
+          </div>
         </div>
       </section>
 
