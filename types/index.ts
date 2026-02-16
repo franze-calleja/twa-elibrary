@@ -344,3 +344,43 @@ export interface TransactionStats {
   overdue: number
   rejected: number
 }
+
+// ================================
+// Dashboard-specific Types
+// ================================
+
+export interface DashboardActivity {
+  id: string
+  type: 'BORROW' | 'RETURN' | 'RENEW' | 'OVERDUE' | 'FINE' | 'REQUEST'
+  title: string
+  description: string
+  timestamp: Date | string
+  userId?: string
+  userName?: string
+  user?: {
+    name: string
+    avatar?: string
+  }
+  metadata?: Record<string, any>
+}
+
+export interface DashboardAlert {
+  id: string
+  type: 'warning' | 'error' | 'info' | 'success'
+  title: string
+  message: string
+  timestamp: Date
+  action?: {
+    label: string
+    link: string
+  }
+}
+
+export interface QuickStat {
+  label: string
+  value: number | string
+  subtitle?: string
+  change?: number // percentage change
+  trend?: 'up' | 'down' | 'neutral'
+  icon?: string
+}
