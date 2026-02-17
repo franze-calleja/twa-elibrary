@@ -420,7 +420,7 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="middleName">Middle Name</Label>
+                  <Label htmlFor="middleName">Middle Name (Optional)</Label>
                   <Input
                     id="middleName"
                     name="middleName"

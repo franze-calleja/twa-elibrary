@@ -19,13 +19,13 @@ export async function POST(request: NextRequest) {
     const validated = registerSchema.parse(body)
     
     // 2. Find pre-registered student by matching personal information
+    // Note: middleName is optional and not used for matching to avoid issues with empty/null values
     const preRegisteredUser = await prisma.user.findFirst({
       where: {
         studentId: validated.studentId,
         email: validated.email,
         firstName: validated.firstName,
         lastName: validated.lastName,
-        middleName: validated.middleName || null,
         role: 'STUDENT',
         status: 'INACTIVE' // Pre-registered students are INACTIVE until they complete registration
       },
@@ -70,11 +70,12 @@ export async function POST(request: NextRequest) {
     // 4. Hash password
     const hashedPassword = await hashPassword(validated.password)
     
-    // 5. Update user with password and activate account
+    // 5. Update user with password, middleName (if provided), and activate account
     const updatedUser = await prisma.user.update({
       where: { id: preRegisteredUser.id },
       data: {
         password: hashedPassword,
+        middleName: validated.middleName || null,
         status: 'ACTIVE'
       }
     })
