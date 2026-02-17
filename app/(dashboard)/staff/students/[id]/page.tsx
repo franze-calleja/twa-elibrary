@@ -39,7 +39,9 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
   const allTransactions = transactionsData?.transactions || []
   
   // Filter active books (ACTIVE or OVERDUE status)
-  const activeBooks = user?.transactions || []
+  const activeBooks = allTransactions.filter(
+    (t) => t.status === 'ACTIVE' || t.status === 'OVERDUE'
+  )
 
   if (userError) {
     return (

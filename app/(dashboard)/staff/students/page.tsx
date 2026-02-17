@@ -15,8 +15,9 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Search, UserPlus, Upload, Loader2, Eye, AlertCircle, CheckCircle, Download, FileText } from 'lucide-react'
+import { Search, UserPlus, Upload, Loader2, Eye, AlertCircle, CheckCircle, Download, FileText, Edit } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import { EditStudentDialog, StudentStatusBadge, StatusActionButtons } from '@/components/student-management'
 import Link from 'next/link'
 import Papa from 'papaparse'
 
@@ -68,8 +69,21 @@ export default function StudentsPage() {
   const [importResults, setImportResults] = useState<any>(null)
   const [importError, setImportError] = useState<string | null>(null)
   
+  // Edit student dialog state
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  
   const users = data?.users || []
   const pagination = data?.pagination
+  
+  const handleEditStudent = (studentId: string) => {
+    setSelectedStudentId(studentId)
+    setShowEditDialog(true)
+  }
+  
+  const handleEditSuccess = () => {
+    refetch()
+  }
   
   // Pre-register handlers
   const handlePreRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -652,17 +666,31 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                     <TableCell>{student.program}</TableCell>
                     <TableCell>{student.yearLevel}</TableCell>
                     <TableCell>
-                      <Badge variant={student.status === 'ACTIVE' ? 'success' : 'secondary'}>
-                        {student.status}
-                      </Badge>
+                      <StudentStatusBadge status={student.status} />
                     </TableCell>
                     <TableCell>{student._count?.transactions || 0}</TableCell>
-                    <TableCell className="text-right">
-                      <Button asChild variant="ghost" size="sm">
-                        <Link href={`/staff/students/${student.id}`}>
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                    <TableCell>
+                      <div className="flex items-center justify-end gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleEditStudent(student.id)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button asChild variant="ghost" size="sm">
+                          <Link href={`/staff/students/${student.id}`}>
+                            <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <StatusActionButtons
+                          studentId={student.id}
+                          currentStatus={student.status}
+                          studentName={`${student.firstName} ${student.lastName}`}
+                          onSuccess={handleEditSuccess}
+                          variant="compact"
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -698,6 +726,14 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
           )}
         </>
       )}
+      
+      {/* Edit Student Dialog */}
+      <EditStudentDialog
+        studentId={selectedStudentId}
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        onSuccess={handleEditSuccess}
+      />
     </div>
   )
 }

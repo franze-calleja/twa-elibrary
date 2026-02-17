@@ -13,7 +13,7 @@ import type { User } from '@prisma/client'
 import { format } from 'date-fns'
 
 interface StudentInfoCardProps {
-  user: User
+  user: Omit<User, 'password'>
 }
 
 export function StudentInfoCard({ user }: StudentInfoCardProps) {

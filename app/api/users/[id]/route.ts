@@ -207,6 +207,68 @@ export async function PUT(
     const body = await request.json()
     const validated = updateUserSchema.parse(body)
 
+    // Validate status transitions (Staff only, for students)
+    if (currentUser.role === 'STAFF' && validated.status && existingUser.role === 'STUDENT') {
+      const currentStatus = existingUser.status
+      const newStatus = validated.status
+      
+      // INACTIVE can only become ACTIVE through registration, not through staff edit
+      if (currentStatus === 'INACTIVE' && newStatus === 'ACTIVE') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'INVALID_STATUS_TRANSITION',
+              message: 'Cannot manually activate an INACTIVE student account. Student must complete registration first.'
+            }
+          },
+          { status: 400 }
+        )
+      }
+      
+      // ACTIVE can only transition to SUSPENDED
+      if (currentStatus === 'ACTIVE' && newStatus !== 'ACTIVE' && newStatus !== 'SUSPENDED') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'INVALID_STATUS_TRANSITION',
+              message: 'Active accounts can only be suspended. Use SUSPENDED status instead.'
+            }
+          },
+          { status: 400 }
+        )
+      }
+      
+      // SUSPENDED can only transition to ACTIVE
+      if (currentStatus === 'SUSPENDED' && newStatus !== 'SUSPENDED' && newStatus !== 'ACTIVE') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'INVALID_STATUS_TRANSITION',
+              message: 'Suspended accounts can only be reactivated. Use ACTIVE status instead.'
+            }
+          },
+          { status: 400 }
+        )
+      }
+      
+      // Block any transition TO INACTIVE
+      if (newStatus === 'INACTIVE' && currentStatus !== 'INACTIVE') {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'INVALID_STATUS_TRANSITION',
+              message: 'Cannot set account status to INACTIVE. INACTIVE is only for pre-registered students awaiting registration.'
+            }
+          },
+          { status: 400 }
+        )
+      }
+    }
+
     // If updating as student (not staff), restrict certain fields
     const updateData: any = {}
     
@@ -219,7 +281,7 @@ export async function PUT(
         }
       }
     } else {
-      // Staff can update all fields
+      // Staff can update all fields (with status validation already applied above)
       Object.assign(updateData, validated)
     }
 

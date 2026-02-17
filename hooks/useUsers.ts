@@ -6,8 +6,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/api'
-import type { ApiResponse } from '@/types'
-import type { StudentPreRegisterInput } from '@/lib/validation'
+import type { ApiResponse, UserWithStats } from '@/types'
+import type { StudentPreRegisterInput, StaffUpdateStudentInput } from '@/lib/validation'
 
 /**
  * Get all users (Staff only)
@@ -29,13 +29,27 @@ export function useUsers(params?: {
 }
 
 /**
- * Get single user details
+ * Get single user details with stats
  */
 export function useUser(id: string) {
   return useQuery({
     queryKey: ['users', id],
     queryFn: async () => {
-      const response = await axios.get<ApiResponse<any>>(`/users/${id}`)
+      const response = await axios.get<ApiResponse<{ user: UserWithStats; stats: any }>>(`/users/${id}`)
+      return response.data.data
+    },
+    enabled: !!id
+  })
+}
+
+/**
+ * Get student details (alias for useUser with better naming for student context)
+ */
+export function useStudent(id: string) {
+  return useQuery({
+    queryKey: ['users', id],
+    queryFn: async () => {
+      const response = await axios.get<ApiResponse<{ user: UserWithStats; stats: any }>>(`/users/${id}`)
       return response.data.data
     },
     enabled: !!id
@@ -85,6 +99,71 @@ export function useUpdateUser(id: string) {
   return useMutation({
     mutationFn: async (data: any) => {
       const response = await axios.put<ApiResponse<any>>(`/users/${id}`, data)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', id] })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    }
+  })
+}
+
+/**
+ * Update student information (Staff only) - More descriptive naming
+ */
+export function useUpdateStudent(id: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: StaffUpdateStudentInput) => {
+      const response = await axios.put<ApiResponse<{ user: UserWithStats }>>(`/users/${id}`, data)
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['users', id] })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] }) // Refresh dashboard if student stats changed
+      return data
+    }
+  })
+}
+
+/**
+ * Update student status (quick action for activate/suspend/deactivate)
+ * 
+ * Status Transition Rules:
+ * - INACTIVE → ACTIVE: Only through registration (will be rejected)
+ * - ACTIVE → SUSPENDED: Allowed (suspend student)
+ * - SUSPENDED → ACTIVE: Allowed (reactivate student)
+ * - Any → INACTIVE: Blocked (INACTIVE is for pre-registration only)
+ * 
+ * @param id - Student user ID
+ */
+export function useUpdateStudentStatus(id: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED') => {
+      const response = await axios.put<ApiResponse<{ user: UserWithStats }>>(`/users/${id}`, { status })
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', id] })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+    }
+  })
+}
+
+/**
+ * Update student borrowing limit (quick action)
+ */
+export function useUpdateBorrowingLimit(id: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (borrowingLimit: number) => {
+      const response = await axios.put<ApiResponse<{ user: UserWithStats }>>(`/users/${id}`, { borrowingLimit })
       return response.data
     },
     onSuccess: () => {

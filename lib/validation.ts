@@ -179,6 +179,104 @@ export const updateUserSchema = z.object({
     .or(z.literal(''))
 })
 
+// Staff updates student information (comprehensive)
+export const staffUpdateStudentSchema = z.object({
+  // Basic Info - Can be edited for ANY status (INACTIVE, ACTIVE, SUSPENDED)
+  // Note: Editing name/email for INACTIVE students means student must register with updated info
+  firstName: z.string()
+    .min(1, 'First name is required')
+    .max(50)
+    .optional(),
+  lastName: z.string()
+    .min(1, 'Last name is required')
+    .max(50)
+    .optional(),
+  email: z.string()
+    .email('Invalid email address')
+    .optional(),
+  phone: z.string()
+    .regex(/^[0-9]{10,15}$/, 'Invalid phone number format')
+    .optional()
+    .or(z.literal('')),
+  avatar: z.string()
+    .url('Invalid avatar URL')
+    .optional()
+    .or(z.literal('')),
+  
+  // Student-specific Info - Can be edited for ANY status
+  program: z.string()
+    .min(1, 'Program is required')
+    .max(100)
+    .optional(),
+  yearLevel: z.number()
+    .int()
+    .min(1, 'Year level must be at least 1')
+    .max(10, 'Year level must not exceed 10')
+    .optional(),
+  
+  // Account Settings
+  // Status transitions enforced at API level:
+  // - INACTIVE → ACTIVE: Only through registration
+  // - ACTIVE ↔ SUSPENDED: Allowed
+  // - Any → INACTIVE: Blocked
+  status: z.enum(['ACTIVE', 'INACTIVE', 'SUSPENDED']).optional(),
+  borrowingLimit: z.number()
+    .int()
+    .min(0, 'Borrowing limit cannot be negative')
+    .max(20, 'Borrowing limit must not exceed 20')
+    .optional()
+})
+
+/**
+ * Validate student status transitions
+ * @param currentStatus - Current status of the student
+ * @param newStatus - New status being set
+ * @returns Object with isValid boolean and error message if invalid
+ */
+export function validateStatusTransition(
+  currentStatus: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED',
+  newStatus: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED'
+): { isValid: boolean; error?: string } {
+  // No change - always valid
+  if (currentStatus === newStatus) {
+    return { isValid: true }
+  }
+  
+  // INACTIVE can only become ACTIVE through registration, not manual edit
+  if (currentStatus === 'INACTIVE' && newStatus === 'ACTIVE') {
+    return { 
+      isValid: false, 
+      error: 'Cannot manually activate an INACTIVE student. Student must complete registration first.' 
+    }
+  }
+  
+  // ACTIVE can only transition to SUSPENDED
+  if (currentStatus === 'ACTIVE' && newStatus !== 'SUSPENDED') {
+    return { 
+      isValid: false, 
+      error: 'Active accounts can only be suspended.' 
+    }
+  }
+  
+  // SUSPENDED can only transition to ACTIVE
+  if (currentStatus === 'SUSPENDED' && newStatus !== 'ACTIVE') {
+    return { 
+      isValid: false, 
+      error: 'Suspended accounts can only be reactivated to ACTIVE.' 
+    }
+  }
+  
+  // Block any transition TO INACTIVE
+  if (newStatus === 'INACTIVE') {
+    return { 
+      isValid: false, 
+      error: 'Cannot set status to INACTIVE. INACTIVE is only for pre-registered students awaiting registration.' 
+    }
+  }
+  
+  return { isValid: true }
+}
+
 // Student account profile update (limited fields)
 export const updateProfileSchema = z.object({
   phone: z.string()
@@ -286,6 +384,7 @@ export type BookInput = z.infer<typeof bookSchema>
 export type UpdateBookInput = z.infer<typeof updateBookSchema>
 export type StudentPreRegisterInput = z.infer<typeof studentPreRegisterSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
+export type StaffUpdateStudentInput = z.infer<typeof staffUpdateStudentSchema>
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
 export type BorrowBookInput = z.infer<typeof borrowBookSchema>
 export type ProcessBorrowInput = z.infer<typeof processBorrowSchema>
