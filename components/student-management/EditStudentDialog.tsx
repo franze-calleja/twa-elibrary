@@ -229,17 +229,18 @@ export function EditStudentDialog({ studentId, open, onOpenChange, onSuccess }: 
                         <FormLabel>Year Level</FormLabel>
                         <FormControl>
                           <Input 
-                            {...field} 
                             type="number" 
                             min={1}
                             max={13}
+                            value={field.value ?? ''}
                             onChange={(e) => {
                               const value = e.target.value
-                              field.onChange(value === '' ? undefined : parseInt(value))
+                              field.onChange(value === '' ? '' : parseInt(value) || '')
                             }}
                             onBlur={(e) => {
+                              field.onBlur()
                               // Set to 1 if empty when user leaves the field
-                              if (e.target.value === '') {
+                              if (e.target.value === '' || !e.target.value) {
                                 field.onChange(1)
                               }
                             }}
@@ -300,11 +301,21 @@ export function EditStudentDialog({ studentId, open, onOpenChange, onSuccess }: 
                         <FormLabel>Borrowing Limit</FormLabel>
                         <FormControl>
                           <Input 
-                            {...field} 
                             type="number" 
                             min={0}
                             max={20}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            value={field.value ?? ''}
+                            onChange={(e) => {
+                              const value = e.target.value
+                              field.onChange(value === '' ? '' : parseInt(value) || '')
+                            }}
+                            onBlur={(e) => {
+                              field.onBlur()
+                              // Set to 3 (default) if empty when user leaves the field
+                              if (e.target.value === '' || !e.target.value) {
+                                field.onChange(3)
+                              }
+                            }}
                           />
                         </FormControl>
                         <FormDescription>
