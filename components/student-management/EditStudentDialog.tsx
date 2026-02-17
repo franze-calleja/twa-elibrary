@@ -233,9 +233,21 @@ export function EditStudentDialog({ studentId, open, onOpenChange, onSuccess }: 
                             type="number" 
                             min={1}
                             max={13}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                            onChange={(e) => {
+                              const value = e.target.value
+                              field.onChange(value === '' ? undefined : parseInt(value))
+                            }}
+                            onBlur={(e) => {
+                              // Set to 1 if empty when user leaves the field
+                              if (e.target.value === '') {
+                                field.onChange(1)
+                              }
+                            }}
                           />
                         </FormControl>
+                        <FormDescription>
+                          Year 1-4 (college), Grade 7-12 (high school), or up to 13 for advanced
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

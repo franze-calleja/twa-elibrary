@@ -495,14 +495,14 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                       type="number"
                       min="1"
                       max="13"
-                      placeholder="e.g., 7-12 (Grade) or 1-4 (Year)"
+                      placeholder="e.g., 1-4 (Year), 7-12 (Grade), or up to 13"
                       value={preRegisterForm.yearLevel}
                       onChange={handlePreRegisterChange}
                       required
                       disabled={preRegister.isPending}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Grade 7-12 for high school, Year 1-4 for college (max 13)
+                      Year 1-4 (college), Grade 7-12 (high school), or up to 13 for advanced
                     </p>
                   </div>
                   
