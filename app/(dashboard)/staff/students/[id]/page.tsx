@@ -5,7 +5,7 @@
 
 'use client'
 
-import { use } from 'react'
+import { use, useState } from 'react'
 import { useUser } from '@/hooks/useUsers'
 import { useTransactions } from '@/hooks/useTransactions'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ import {
   ActiveBooksCard, 
   BorrowingHistoryTable 
 } from '@/components/student'
+import { EditStudentDialog } from '@/components/student-management'
 import { ArrowLeft, AlertCircle, Loader2, Edit } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,15 +24,20 @@ import { useRouter } from 'next/navigation'
 export default function StudentDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const { id } = use(params)
+  const [showEditDialog, setShowEditDialog] = useState(false)
   
   // Fetch student data
-  const { data: userData, isLoading: userLoading, error: userError } = useUser(id)
+  const { data: userData, isLoading: userLoading, error: userError, refetch } = useUser(id)
   
   // Fetch all transactions for this student
   const { data: transactionsData, isLoading: transactionsLoading } = useTransactions({
     userId: id,
     limit: 1000 // Get all transactions
   })
+  
+  const handleEditSuccess = () => {
+    refetch()
+  }
 
   const isLoading = userLoading || transactionsLoading
   const user = userData?.user
@@ -127,7 +133,7 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
-          <Button>
+          <Button onClick={() => setShowEditDialog(true)}>
             <Edit className="mr-2 h-4 w-4" />
             Edit Student
           </Button>
@@ -154,6 +160,14 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
       <BorrowingHistoryTable 
         transactions={allTransactions} 
         isLoading={transactionsLoading}
+      />
+      
+      {/* Edit Student Dialog */}
+      <EditStudentDialog
+        studentId={id}
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        onSuccess={handleEditSuccess}
       />
     </div>
   )

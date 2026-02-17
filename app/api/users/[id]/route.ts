@@ -12,7 +12,7 @@ const updateUserSchema = z.object({
   phone: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE', 'SUSPENDED']).optional(),
   program: z.string().optional(),
-  yearLevel: z.number().int().min(1).max(10).optional(),
+  yearLevel: z.number().int().min(1).max(13).optional(),
   borrowingLimit: z.number().int().min(0).max(20).optional(),
   avatar: z.string().optional(),
 })

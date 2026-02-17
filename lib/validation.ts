@@ -211,7 +211,7 @@ export const staffUpdateStudentSchema = z.object({
   yearLevel: z.number()
     .int()
     .min(1, 'Year level must be at least 1')
-    .max(10, 'Year level must not exceed 10')
+    .max(13, 'Year level must not exceed 13')
     .optional(),
   
   // Account Settings

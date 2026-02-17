@@ -110,7 +110,7 @@ export function StatusActionButtons({
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              <Ban className="h-4 w-4 mr-2" />
+              <Ban className={variant === 'default' ? "h-4 w-4 mr-2" : "h-4 w-4"} />
               {variant === 'default' && 'Suspend'}
             </>
           )}
@@ -161,7 +161,7 @@ export function StatusActionButtons({
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              <CheckCircle className="h-4 w-4 mr-2" />
+              <CheckCircle className={variant === 'default' ? "h-4 w-4 mr-2" : "h-4 w-4"} />
               {variant === 'default' && 'Reactivate'}
             </>
           )}

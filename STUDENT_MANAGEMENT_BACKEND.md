@@ -175,7 +175,7 @@ if (data) {
   
   // Student-specific Info
   program?: string                // 1-100 characters
-  yearLevel?: number              // 1-10
+  yearLevel?: number              // 1-13 (K-12 + college)
   
   // Account Settings (Staff only)
   status?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED'
@@ -190,7 +190,7 @@ if (data) {
 - `phone`: 10-15 digit format or empty string
 - `avatar`: Valid URL or empty string
 - `program`: 1-100 characters
-- `yearLevel`: Integer between 1-10
+- `yearLevel`: Integer between 1-13 (supports K-12 + college)
 - `status`: Must be ACTIVE, INACTIVE, or SUSPENDED
 - `borrowingLimit`: Integer between 0-20
 
@@ -290,7 +290,7 @@ const staffUpdateStudentSchema = z.object({
   
   // Student-specific Info - Can be edited for ANY status
   program: z.string().min(1).max(100).optional(),
-  yearLevel: z.number().int().min(1).max(10).optional(),
+  yearLevel: z.number().int().min(1).max(13).optional(),
   
   // Account Settings
   // Status transitions enforced at API level:
