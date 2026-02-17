@@ -5,16 +5,29 @@
 
 'use client'
 
-import { useAuth, useLogout } from '@/hooks/useAuth'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useAuth } from '@/hooks/useAuth'
+import { useStudentDashboard } from '@/hooks/useStudentDashboard'
 import { Button } from '@/components/ui/button'
-import { BookOpen, Search, History, LogOut, Loader2, User } from 'lucide-react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Loader2, RefreshCcw, AlertCircle } from 'lucide-react'
+import { 
+  StudentStatsGrid, 
+  CurrentBorrowsCard, 
+  StudentQuickActionsCard 
+} from '@/components/student-dashboard'
 
 export default function StudentDashboardPage() {
-  const { user, isLoading } = useAuth()
-  const logout = useLogout()
+  const { user, isLoading: isAuthLoading } = useAuth()
+  const { 
+    stats, 
+    recentBorrows, 
+    isLoading, 
+    isError, 
+    error, 
+    refetchAll 
+  } = useStudentDashboard()
   
-  if (isLoading) {
+  if (isAuthLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -24,106 +37,51 @@ export default function StudentDashboardPage() {
   
   return (
     <div className="min-h-screen bg-background">
-      {/* Header removed per design */}
-      
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Welcome Section */}
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Welcome back, {user?.firstName}!
-            </h2>
-            <p className="text-muted-foreground mt-2">
-              Explore our collection and manage your borrowed books.
-            </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">
+                Welcome back, {user?.firstName}!
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Explore our collection and manage your borrowed books.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={refetchAll}
+              disabled={isLoading}
+            >
+              <RefreshCcw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
           </div>
+
+          {/* Error Alert */}
+          {isError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {error?.message || 'Failed to load dashboard data. Please try again.'}
+              </AlertDescription>
+            </Alert>
+          )}
           
-          {/* Account Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Borrowed Books</CardTitle>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">
-                  {user?.borrowingLimit} books available
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Overdue Books</CardTitle>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">
-                  All books returned on time
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Outstanding Fines</CardTitle>
-                <User className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">₱0.00</div>
-                <p className="text-xs text-muted-foreground">
-                  No pending fines
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Stats Grid */}
+          <StudentStatsGrid stats={stats.data} isLoading={stats.isLoading} />
           
           {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>
-                Browse and manage your library account
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
-                <Search className="h-8 w-8 mb-2" />
-                <span>Browse Books</span>
-              </Button>
-              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
-                <BookOpen className="h-8 w-8 mb-2" />
-                <span>My Books</span>
-              </Button>
-              <Button className="h-auto flex-col py-6 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg" variant="outline">
-                <History className="h-8 w-8 mb-2" />
-                <span>Borrowing History</span>
-              </Button>
-            </CardContent>
-          </Card>
+          <StudentQuickActionsCard />
           
           {/* Currently Borrowed Books */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Currently Borrowed</CardTitle>
-              <CardDescription>
-                Books you currently have checked out
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No borrowed books</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  You haven't borrowed any books yet. Browse our collection to get started!
-                </p>
-                <Button>Browse Books</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <CurrentBorrowsCard 
+            borrows={recentBorrows.data?.transactions || []} 
+            isLoading={recentBorrows.isLoading} 
+          />
         </div>
       </main>
     </div>

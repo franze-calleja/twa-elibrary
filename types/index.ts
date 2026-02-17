@@ -148,6 +148,7 @@ export interface StudentDashboardStats {
   borrowingLimit: number
   availableBorrowings: number
   totalBorrowingHistory: number
+  accountStatus?: string
 }
 
 // ================================
