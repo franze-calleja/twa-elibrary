@@ -141,7 +141,7 @@ export function getAvatarUrl(profile: UserProfile | null): string {
 
 /**
  * Format year level display
- * Handles both college years (1-4) and grade levels (7-12)
+ * Handles both college years (1-4+) and grade levels (K-12)
  */
 export function formatYearLevel(yearLevel: number | null): string {
   if (!yearLevel) return 'N/A'
@@ -151,16 +151,25 @@ export function formatYearLevel(yearLevel: number | null): string {
     return `Grade ${yearLevel}`
   }
   
-  // Year 1-4 (College)
-  const suffixes: Record<number, string> = {
-    1: 'st',
-    2: 'nd',
-    3: 'rd',
-    4: 'th'
+  // College years (1-4+)
+  if (yearLevel >= 1 && yearLevel <= 6) {
+    const suffixes: Record<number, string> = {
+      1: 'st',
+      2: 'nd',
+      3: 'rd',
+      4: 'th',
+      5: 'th',
+      6: 'th'
+    }
+    return `${yearLevel}${suffixes[yearLevel]} Year`
   }
   
-  const suffix = suffixes[yearLevel] || 'th'
-  return `${yearLevel}${suffix} Year`
+  // Graduate or advanced years (13+)
+  if (yearLevel >= 13) {
+    return `${yearLevel}th Year`
+  }
+  
+  return `Year ${yearLevel}`
 }
 
 /**

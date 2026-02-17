@@ -68,7 +68,7 @@ model User {
   // Student-specific fields (nullable for staff)
   studentId         String?           @unique
   program           String?
-  yearLevel         Int?              // Year 1-4 (college) or Grade 7-12 (high school)
+  yearLevel         Int?              // 1-13 (college years 1-4+, grade levels 7-12, or advanced)
   section           String?           // Section/Block (e.g., "A", "1A", "Block 1")
   borrowingLimit    Int               @default(3)
   

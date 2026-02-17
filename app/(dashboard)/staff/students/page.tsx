@@ -296,7 +296,7 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                 <Alert>
                   <FileText className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel (1-12), section (optional), phone (optional), borrowingLimit (optional)
+                    <strong>CSV Format:</strong> email, firstName, lastName, middleName (optional), studentId, program, yearLevel (1-13), section (optional), phone (optional), borrowingLimit (optional)
                     <br />
                     <span className="text-xs">Year 1-4 for college, Grade 7-12 for high school</span>
                   </AlertDescription>
@@ -494,7 +494,7 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                       name="yearLevel"
                       type="number"
                       min="1"
-                      max="12"
+                      max="13"
                       placeholder="e.g., 7-12 (Grade) or 1-4 (Year)"
                       value={preRegisterForm.yearLevel}
                       onChange={handlePreRegisterChange}
@@ -502,7 +502,7 @@ peter.garcia@example.com,Peter,Garcia,Santos,2024-00003,Grade 10,10,C,0987654321
                       disabled={preRegister.isPending}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Grade 7-12 for high school, Year 1-4 for college
+                      Grade 7-12 for high school, Year 1-4 for college (max 13)
                     </p>
                   </div>
                   

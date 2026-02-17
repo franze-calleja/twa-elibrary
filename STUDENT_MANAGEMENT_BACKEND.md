@@ -827,7 +827,7 @@ export function EditStudentDialog() {
                         {...field} 
                         type="number" 
                         min={1}
-                        max={10}
+                        max={13}
                         onChange={(e) => field.onChange(parseInt(e.target.value))}
                       />
                     </FormControl>
