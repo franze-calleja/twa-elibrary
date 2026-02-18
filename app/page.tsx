@@ -62,6 +62,18 @@ export default function Home() {
                   Your Gateway to
                   <VerticalTicker />
                 </h1>
+
+            {/* Mobile student image shown directly under the heading on small screens */}
+            <div className="lg:hidden mt-6 flex justify-center">
+              <Image
+                src="/student-model.png"
+                alt="Student holding books"
+                width={600}
+                height={600}
+                className="w-full max-w-xs h-auto object-contain"
+                priority
+              />
+            </div>
             
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0">
               Access thousands of books, manage your borrowing, and explore a world of knowledge — all from one modern platform.
@@ -100,17 +112,7 @@ export default function Home() {
             </MotionWrapper>
           </MotionWrapper>
 
-          {/* Mobile image (visible on small screens) */}
-          <div className="lg:hidden relative z-20 flex justify-center mt-6">
-            <Image
-              src="/student-model.png"
-              alt="Student holding books"
-              width={900}
-              height={900}
-              className="w-full max-w-sm h-auto object-contain"
-              priority
-            />
-          </div>
+          {/* (Mobile image moved into the hero content so it appears immediately under the heading) */}
 
           {/* Hero Image/Illustration - student image displayed larger on wide screens */}
           <MotionWrapper className="relative hidden lg:flex items-center justify-center lg:justify-end lg:pr-8 z-20" delay={0.12}>
@@ -120,13 +122,13 @@ export default function Home() {
               className="absolute -right-20 -bottom-40 -translate-y-1/2 translate-x-1/4 w-72 h-72 md:w-[750px] md:h-[750px] rounded-full bg-[#f7de85] z-10"
             />
 
-            <div className="relative -right-20 -bottom-10  z-10 w-full max-w-[1700px] h-auto">
+            <div className="relative -right-20 -bottom-10  z-10 w-full max-w-[1000px] h-auto">
               <Image
                 src="/student-model.png"
                 alt="Student holding books"
-                width={1600}
-                height={1600}
-                className="w-full max-w-[1700px] h-auto object-contain lg:scale-110 xl:scale-125 lg:-mr-8 relative z-10"
+                width={1000}
+                height={1000}
+                className="w-full max-w-[1000px] h-auto object-contain lg:scale-100 xl:scale-110 lg:-mr-8 relative z-10"
                 priority
               />
             </div>
