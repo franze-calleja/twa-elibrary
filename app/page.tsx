@@ -63,18 +63,23 @@ export default function Home() {
                   <VerticalTicker />
                 </h1>
 
-            {/* Mobile student image shown directly under the heading on small screens */}
-            <div className="lg:hidden mt-6 flex justify-center">
+            {/* Mobile-only student image shown directly under the heading */}
+            <div className="lg:hidden mt-6 flex justify-center z-20 relative">
               <Image
                 src="/student-model.png"
                 alt="Student holding books"
                 width={600}
                 height={600}
-                className="w-full max-w-xs h-auto object-contain"
+                className="w-full max-w-xs h-auto object-contain relative z-10"
                 priority
               />
+              {/* Decorative yellow circle behind the mobile image, positioned to the right */}
+              <div
+                aria-hidden
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-[#f7de85] z-0"
+              />
             </div>
-            
+
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0">
               Access thousands of books, manage your borrowing, and explore a world of knowledge — all from one modern platform.
             </p>
@@ -112,8 +117,6 @@ export default function Home() {
             </MotionWrapper>
           </MotionWrapper>
 
-          {/* (Mobile image moved into the hero content so it appears immediately under the heading) */}
-
           {/* Hero Image/Illustration - student image displayed larger on wide screens */}
           <MotionWrapper className="relative hidden lg:flex items-center justify-center lg:justify-end lg:pr-8 z-20" delay={0.12}>
             {/* Decorative yellow circle behind the student image (large, solid) */}
@@ -122,7 +125,7 @@ export default function Home() {
               className="absolute -right-20 -bottom-40 -translate-y-1/2 translate-x-1/4 w-72 h-72 md:w-[750px] md:h-[750px] rounded-full bg-[#f7de85] z-10"
             />
 
-            <div className="relative -right-20 -bottom-10  z-10 w-full max-w-[1000px] h-auto">
+            <div className="relative -right-20 -bottom-20  z-10 w-full max-w-[1000px] h-auto">
               <Image
                 src="/student-model.png"
                 alt="Student holding books"
@@ -134,6 +137,8 @@ export default function Home() {
             </div>
           </MotionWrapper>
           </div>
+
+          {/* Mobile image removed from bottom; it's shown within the hero content above */}
         </div>
       </section>
 
