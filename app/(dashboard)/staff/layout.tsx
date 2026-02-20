@@ -215,6 +215,21 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile Header */}
+        <header className="lg:hidden flex items-center gap-4 p-4 border-b bg-card">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+          <div className="flex items-center gap-2">
+            <BookOpen className="h-6 w-6 text-primary" />
+            <span className="font-bold">TWA E-Library</span>
+          </div>
+        </header>
+
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-6">
           {children}
