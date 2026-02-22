@@ -199,6 +199,50 @@ export function useDeleteBook(): UseMutationResult<void, any, string> {
 }
 
 /**
+ * Fetch paginated history for a single book
+ */
+export interface BookHistoryEntry {
+  id: string
+  bookId: string
+  action: string
+  description: string
+  performedBy: string | null
+  createdAt: string
+  performer: {
+    id: string
+    firstName: string
+    lastName: string
+    role: string
+  } | null
+}
+
+export interface BookHistoryResponse {
+  history: BookHistoryEntry[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
+}
+
+export function useBookHistory(
+  bookId: string | null,
+  page = 1,
+  limit = 20
+): UseQueryResult<BookHistoryResponse> {
+  return useQuery({
+    queryKey: ['books', bookId, 'history', { page, limit }],
+    queryFn: async () => {
+      const res = await axios.get(`/books/${bookId}/history`, { params: { page, limit } })
+      return res.data.data
+    },
+    enabled: !!bookId,
+    staleTime: 60 * 1000 // 1 minute
+  })
+}
+
+/**
  * Update book status (AVAILABLE, MAINTENANCE, etc.)
  */
 export function useUpdateBookStatus(id: string): UseMutationResult<

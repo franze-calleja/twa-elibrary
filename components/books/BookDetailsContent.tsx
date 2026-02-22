@@ -6,14 +6,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useBook, useBarcodeImage, useUpdateBookStatus } from '@/hooks/useBooks'
+import { useBook, useBarcodeImage, useUpdateBookStatus, useBookHistory } from '@/hooks/useBooks'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { Loader2, ArrowLeft, Edit, Download, User, Clock, BookOpen } from 'lucide-react'
+import { Loader2, ArrowLeft, Edit, Download, User, Clock, BookOpen, History } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -33,8 +33,10 @@ export function BookDetailsContent({ bookId }: BookDetailsContentProps) {
   const updateStatus = useUpdateBookStatus(bookId)
   
   const [showEditDialog, setShowEditDialog] = useState(false)
+  const [historyPage, setHistoryPage] = useState(1)
   
   const book = data?.book
+  const { data: historyData, isLoading: historyLoading } = useBookHistory(bookId, historyPage)
   
   const handleStatusChange = (status: string) => {
     updateStatus.mutate({ status }, {
@@ -301,10 +303,76 @@ export function BookDetailsContent({ bookId }: BookDetailsContentProps) {
                 </TabsContent>
                 
                 <TabsContent value="history" className="mt-4">
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Clock className="mx-auto h-8 w-8 mb-2" />
-                    <p>Transaction history coming soon</p>
-                  </div>
+                  {historyLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    </div>
+                  ) : historyData && historyData.history.length > 0 ? (
+                    <div className="space-y-3">
+                      {historyData.history.map((entry) => (
+                        <div
+                          key={entry.id}
+                          className="flex items-start gap-3 rounded-lg border p-3 text-sm"
+                        >
+                          <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted">
+                            <History className="h-3.5 w-3.5 text-muted-foreground" />
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-medium">
+                                {entry.action.replace(/_/g, ' ')}
+                              </span>
+                              <span className="shrink-0 text-xs text-muted-foreground">
+                                {format(new Date(entry.createdAt), 'MMM dd, yyyy · h:mm a')}
+                              </span>
+                            </div>
+                            <p className="text-muted-foreground">{entry.description}</p>
+                            {entry.performer && (
+                              <p className="text-xs text-muted-foreground">
+                                By {entry.performer.firstName} {entry.performer.lastName}
+                                <span className="ml-1 capitalize opacity-70">
+                                  ({entry.performer.role.toLowerCase()})
+                                </span>
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Pagination */}
+                      {historyData.pagination.totalPages > 1 && (
+                        <div className="flex items-center justify-between pt-2">
+                          <p className="text-xs text-muted-foreground">
+                            Page {historyData.pagination.page} of {historyData.pagination.totalPages}
+                            {' '}({historyData.pagination.total} entries)
+                          </p>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setHistoryPage((p) => Math.max(1, p - 1))}
+                              disabled={historyPage === 1}
+                            >
+                              Previous
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setHistoryPage((p) => p + 1)}
+                              disabled={historyPage >= historyData.pagination.totalPages}
+                            >
+                              Next
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <History className="mx-auto h-8 w-8 mb-2" />
+                      <p>No history recorded yet</p>
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
