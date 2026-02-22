@@ -7,7 +7,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/api'
 import type { ApiResponse, UserWithStats } from '@/types'
-import type { StudentPreRegisterInput, StaffUpdateStudentInput } from '@/lib/validation'
+import type { StudentPreRegisterInput, StaffUpdateStudentInput, CreateAdminInput } from '@/lib/validation'
 
 /**
  * Get all users (Staff only)
@@ -168,6 +168,23 @@ export function useUpdateBorrowingLimit(id: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users', id] })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    }
+  })
+}
+
+/**
+ * Create a new admin/staff account (Staff only)
+ */
+export function useCreateAdmin() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: CreateAdminInput) => {
+      const response = await axios.post<ApiResponse<{ admin: UserWithStats }>>('/users/create-admin', data)
+      return response.data
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   })

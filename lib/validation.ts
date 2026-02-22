@@ -377,6 +377,42 @@ export const renewBookSchema = z.object({
 // Type Exports
 // ================================
 
+// ================================
+// Admin / Staff Account Schema
+// ================================
+
+export const createAdminSchema = z.object({
+  email: z.string()
+    .email('Invalid email address'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+    ),
+  confirmPassword: z.string()
+    .min(1, 'Please confirm your password'),
+  firstName: z.string()
+    .min(1, 'First name is required')
+    .max(50),
+  lastName: z.string()
+    .min(1, 'Last name is required')
+    .max(50),
+  middleName: z.string()
+    .max(50)
+    .optional()
+    .or(z.literal('')),
+  phone: z.string()
+    .regex(/^[0-9]{10,15}$/, 'Invalid phone number')
+    .optional()
+    .or(z.literal(''))
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword']
+})
+
+export type CreateAdminInput = z.infer<typeof createAdminSchema>
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
