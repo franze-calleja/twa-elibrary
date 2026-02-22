@@ -16,8 +16,8 @@ import {
   ActiveBooksCard, 
   BorrowingHistoryTable 
 } from '@/components/student'
-import { EditStudentDialog } from '@/components/student-management'
-import { ArrowLeft, AlertCircle, Loader2, Edit } from 'lucide-react'
+import { EditStudentDialog, ResetPasswordDialog } from '@/components/student-management'
+import { ArrowLeft, AlertCircle, Loader2, Edit, KeyRound } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -25,6 +25,7 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
   const router = useRouter()
   const { id } = use(params)
   const [showEditDialog, setShowEditDialog] = useState(false)
+  const [showResetPassword, setShowResetPassword] = useState(false)
   
   // Fetch student data
   const { data: userData, isLoading: userLoading, error: userError, refetch } = useUser(id)
@@ -133,6 +134,10 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
+          <Button variant="outline" onClick={() => setShowResetPassword(true)}>
+            <KeyRound className="mr-2 h-4 w-4" />
+            Reset Password
+          </Button>
           <Button onClick={() => setShowEditDialog(true)}>
             <Edit className="mr-2 h-4 w-4" />
             Edit Student
@@ -169,6 +174,15 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
         onOpenChange={setShowEditDialog}
         onSuccess={handleEditSuccess}
       />
+
+      {user && (
+        <ResetPasswordDialog
+          userId={id}
+          userName={`${user.firstName} ${user.lastName}`}
+          open={showResetPassword}
+          onOpenChange={setShowResetPassword}
+        />
+      )}
     </div>
   )
 }

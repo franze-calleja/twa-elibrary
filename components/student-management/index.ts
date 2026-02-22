@@ -6,3 +6,4 @@
 export { EditStudentDialog } from './EditStudentDialog'
 export { StudentStatusBadge, StudentStatusIndicator } from './StudentStatusBadge'
 export { StatusActionButtons } from './StatusActionButtons'
+export { ResetPasswordDialog } from './ResetPasswordDialog'

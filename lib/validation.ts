@@ -378,6 +378,26 @@ export const renewBookSchema = z.object({
 // ================================
 
 // ================================
+// Staff Reset Password Schema (no current password needed)
+// ================================
+
+export const staffResetPasswordSchema = z.object({
+  newPassword: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+    ),
+  confirmPassword: z.string()
+    .min(1, 'Please confirm the new password')
+}).refine(data => data.newPassword === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword']
+})
+
+export type StaffResetPasswordInput = z.infer<typeof staffResetPasswordSchema>
+
+// ================================
 // Admin / Staff Account Schema
 // ================================
 

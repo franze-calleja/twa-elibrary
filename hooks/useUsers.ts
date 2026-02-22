@@ -7,7 +7,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from '@/lib/api'
 import type { ApiResponse, UserWithStats } from '@/types'
-import type { StudentPreRegisterInput, StaffUpdateStudentInput, CreateAdminInput } from '@/lib/validation'
+import type { StudentPreRegisterInput, StaffUpdateStudentInput, CreateAdminInput, StaffResetPasswordInput } from '@/lib/validation'
 
 /**
  * Get all users (Staff only)
@@ -169,6 +169,18 @@ export function useUpdateBorrowingLimit(id: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users', id] })
       queryClient.invalidateQueries({ queryKey: ['users'] })
+    }
+  })
+}
+
+/**
+ * Reset any user's password (Staff only — no current password required)
+ */
+export function useResetUserPassword(id: string) {
+  return useMutation({
+    mutationFn: async (data: StaffResetPasswordInput) => {
+      const response = await axios.post<ApiResponse<{ message: string }>>(`/users/${id}/password`, data)
+      return response.data
     }
   })
 }

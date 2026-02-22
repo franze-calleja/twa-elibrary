@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAdminSchema, type CreateAdminInput } from '@/lib/validation'
 import { useUsers, useCreateAdmin } from '@/hooks/useUsers'
+import { ResetPasswordDialog } from '@/components/student-management'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
@@ -18,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2, UserPlus, Shield, User, Mail, Phone, Eye, EyeOff } from 'lucide-react'
+import { Loader2, UserPlus, Shield, User, Mail, Phone, Eye, EyeOff, KeyRound } from 'lucide-react'
 import { format } from 'date-fns'
 
 export default function SettingsPage() {
@@ -26,6 +27,7 @@ export default function SettingsPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [resetTarget, setResetTarget] = useState<{ id: string; name: string } | null>(null)
 
   // Fetch existing staff accounts
   const { data, isLoading: loadingStaff, refetch } = useUsers({ role: 'STAFF', limit: 50 })
@@ -145,6 +147,19 @@ export default function SettingsPage() {
                       {staff.status}
                     </Badge>
                     <Badge variant="outline">Staff</Badge>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setResetTarget({
+                          id: staff.id,
+                          name: `${staff.firstName} ${staff.lastName}`,
+                        })
+                      }
+                    >
+                      <KeyRound className="mr-1.5 h-3.5 w-3.5" />
+                      Reset Password
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -335,6 +350,16 @@ export default function SettingsPage() {
           </Form>
         </DialogContent>
       </Dialog>
+
+      {/* Reset Password Dialog */}
+      {resetTarget && (
+        <ResetPasswordDialog
+          userId={resetTarget.id}
+          userName={resetTarget.name}
+          open={!!resetTarget}
+          onOpenChange={(open) => { if (!open) setResetTarget(null) }}
+        />
+      )}
     </div>
   )
 }
