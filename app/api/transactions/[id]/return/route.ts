@@ -118,17 +118,16 @@ export async function PATCH(
         }
       })
 
-      // Create book history if damaged or lost
-      if (validated.condition !== 'GOOD') {
-        await tx.bookHistory.create({
-          data: {
-            bookId: transaction.bookId,
-            action: 'STATUS_CHANGED',
-            description: `Book returned in ${validated.condition} condition by ${transaction.user.firstName} ${transaction.user.lastName}. Processed by ${user.firstName} ${user.lastName}`,
-            performedBy: user.id
-          }
-        })
-      }
+      // Always create a book history entry on return
+      const conditionNote = validated.condition !== 'GOOD' ? ` — condition: ${validated.condition}` : ''
+      await tx.bookHistory.create({
+        data: {
+          bookId: transaction.bookId,
+          action: validated.condition === 'GOOD' ? 'RETURNED' : 'STATUS_CHANGED',
+          description: `Returned by ${transaction.user.firstName} ${transaction.user.lastName}${conditionNote}. Processed by ${user.firstName} ${user.lastName}${isOverdue ? ` (${daysOverdue} day(s) overdue)` : ''}`,
+          performedBy: user.id
+        }
+      })
 
       // Create audit log
       await tx.auditLog.create({

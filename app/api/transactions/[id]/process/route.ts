@@ -105,6 +105,16 @@ export async function PATCH(
           }
         })
 
+        // Create book history entry
+        await tx.bookHistory.create({
+          data: {
+            bookId: transaction.bookId,
+            action: 'BORROWED',
+            description: `Borrow request approved by ${user.firstName} ${user.lastName}. Borrowed by ${transaction.user.firstName} ${transaction.user.lastName} (due ${updatedTransaction.dueDate.toLocaleDateString()})`,
+            performedBy: user.id
+          }
+        })
+
         // Create audit log
         await tx.auditLog.create({
           data: {
@@ -148,6 +158,16 @@ export async function PATCH(
               studentId: true
             }
           }
+        }
+      })
+
+      // Create book history entry
+      await prisma.bookHistory.create({
+        data: {
+          bookId: transaction.bookId,
+          action: 'BORROW_REJECTED',
+          description: `Borrow request by ${transaction.user.firstName} ${transaction.user.lastName} was rejected by ${user.firstName} ${user.lastName}`,
+          performedBy: user.id
         }
       })
 

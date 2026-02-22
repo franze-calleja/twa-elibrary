@@ -130,6 +130,16 @@ export async function PATCH(
       }
     })
 
+    // Create book history entry
+    await prisma.bookHistory.create({
+      data: {
+        bookId: transaction.bookId,
+        action: 'RENEWED',
+        description: `Renewed by ${transaction.user.firstName} ${transaction.user.lastName}. New due date: ${newDueDate.toLocaleDateString()} (renewal ${updatedTransaction.renewalCount}/${maxRenewals})`,
+        performedBy: user.id
+      }
+    })
+
     // Create audit log
     await prisma.auditLog.create({
       data: {

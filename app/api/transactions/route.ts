@@ -284,6 +284,16 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Create book history entry
+    await prisma.bookHistory.create({
+      data: {
+        bookId: book.id,
+        action: 'BORROW_REQUESTED',
+        description: `Student ${user.firstName} ${user.lastName} submitted a borrow request for ${validated.requestedDays} days`,
+        performedBy: user.id
+      }
+    })
+
     // Create audit log
     await prisma.auditLog.create({
       data: {
