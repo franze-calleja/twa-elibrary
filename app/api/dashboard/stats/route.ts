@@ -34,9 +34,7 @@ export async function GET(request: NextRequest) {
       totalUsers,
       activeStudents,
       activeTransactions,
-      overdueTransactions,
-      totalFines,
-      unpaidFines
+      overdueTransactions
     ] = await Promise.all([
       // Total books (sum of all quantities)
       prisma.book.aggregate({
@@ -84,25 +82,6 @@ export async function GET(request: NextRequest) {
         where: {
           status: 'OVERDUE'
         }
-      }),
-      
-      // Total fines amount
-      prisma.fine.aggregate({
-        _sum: {
-          amount: true
-        }
-      }),
-      
-      // Unpaid fines amount
-      prisma.fine.aggregate({
-        _sum: {
-          amount: true
-        },
-        where: {
-          status: {
-            in: ['UNPAID']
-          }
-        }
       })
     ])
 
@@ -113,9 +92,7 @@ export async function GET(request: NextRequest) {
       totalUsers,
       activeStudents,
       activeTransactions,
-      overdueTransactions,
-      totalFines: Number(totalFines._sum.amount || 0),
-      unpaidFines: Number(unpaidFines._sum.amount || 0)
+      overdueTransactions
     }
 
     return NextResponse.json({

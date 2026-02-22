@@ -75,9 +75,6 @@ export async function GET(request: NextRequest) {
             select: {
               transactions: {
                 where: { status: 'ACTIVE' }
-              },
-              fines: {
-                where: { status: 'UNPAID' }
               }
             }
           }

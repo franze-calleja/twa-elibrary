@@ -200,7 +200,7 @@ export function useChangePassword(): UseMutationResult<
  * 
  * @example
  * const stats = useProfileStats()
- * console.log(stats.activeLoans, stats.unpaidFines)
+ * console.log(stats.activeLoans)
  */
 export function useProfileStats() {
   const { data: profile } = useProfile()
@@ -208,7 +208,6 @@ export function useProfileStats() {
   if (!profile) {
     return {
       activeLoans: 0,
-      unpaidFines: 0,
       borrowingLimit: 0,
       availableSlots: 0,
       canBorrow: false
@@ -216,16 +215,14 @@ export function useProfileStats() {
   }
 
   const activeLoans = profile._count?.transactions || 0
-  const unpaidFines = profile._count?.fines || 0
   const borrowingLimit = profile.borrowingLimit
   const availableSlots = borrowingLimit - activeLoans
 
   return {
     activeLoans,
-    unpaidFines,
     borrowingLimit,
     availableSlots,
-    canBorrow: availableSlots > 0 && unpaidFines === 0 && profile.status === 'ACTIVE'
+    canBorrow: availableSlots > 0 && profile.status === 'ACTIVE'
   }
 }
 
@@ -243,13 +240,10 @@ export function useCanBorrow(): boolean {
   if (!profile) return false
 
   const activeLoans = profile._count?.transactions || 0
-  const unpaidFines = profile._count?.fines || 0
-  const hasOverdueFines = unpaidFines > 0
 
   return (
     profile.status === 'ACTIVE' &&
-    activeLoans < profile.borrowingLimit &&
-    !hasOverdueFines
+    activeLoans < profile.borrowingLimit
   )
 }
 

@@ -98,11 +98,6 @@ async function main() {
       description: 'Maximum number of renewals per book',
     },
     {
-      key: 'FINE_PER_DAY',
-      value: '5.00',
-      description: 'Fine amount per day for overdue books (in currency)',
-    },
-    {
       key: 'MAX_BORROWING_LIMIT_STUDENT',
       value: '3',
       description: 'Maximum books a student can borrow simultaneously',

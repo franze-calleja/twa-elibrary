@@ -57,11 +57,6 @@ export async function GET(request: NextRequest) {
               where: {
                 status: 'ACTIVE'
               }
-            },
-            fines: {
-              where: {
-                status: 'UNPAID'
-              }
             }
           }
         }

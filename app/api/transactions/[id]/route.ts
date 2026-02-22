@@ -46,8 +46,7 @@ export async function GET(
             program: true,
             yearLevel: true
           }
-        },
-        fine: true
+        }
       }
     })
 

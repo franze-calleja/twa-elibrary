@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress'
 import { useProfileStats } from '@/hooks/useAccount'
 import { getBorrowingCapacity, getBorrowingCapacityColor } from '@/lib/account'
-import { Book, AlertCircle, CheckCircle, TrendingUp } from 'lucide-react'
+import { Book, CheckCircle, TrendingUp } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function ProfileStats() {
@@ -33,24 +33,6 @@ export function ProfileStats() {
           <Progress value={capacityPercentage} className="mt-3" />
           <p className={`text-xs mt-2 ${capacityColor}`}>
             {stats.availableSlots} {stats.availableSlots === 1 ? 'slot' : 'slots'} available
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Unpaid Fines */}
-      <Card className="border border-slate-200 shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Unpaid Fines</CardTitle>
-          <AlertCircle className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.unpaidFines}</div>
-          <p className="text-xs text-muted-foreground mt-3">
-            {stats.unpaidFines > 0 ? (
-              <span className="text-destructive font-medium">Action required</span>
-            ) : (
-              <span className="text-green-600 font-medium">All clear!</span>
-            )}
           </p>
         </CardContent>
       </Card>

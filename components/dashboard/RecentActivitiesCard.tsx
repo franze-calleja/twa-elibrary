@@ -25,7 +25,6 @@ const activityTypeColors = {
   RETURN: 'bg-green-500/10 text-green-700 dark:text-green-400',
   RENEW: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400',
   OVERDUE: 'bg-red-500/10 text-red-700 dark:text-red-400',
-  FINE: 'bg-orange-500/10 text-orange-700 dark:text-orange-400',
   REQUEST: 'bg-purple-500/10 text-purple-700 dark:text-purple-400',
 } as const
 

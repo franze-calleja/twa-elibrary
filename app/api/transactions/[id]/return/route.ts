@@ -73,23 +73,6 @@ export async function PATCH(
     const daysOverdue = differenceInDays(now, transaction.dueDate)
     const isOverdue = daysOverdue > 0
 
-    // Calculate fine if overdue
-    let fine = null
-    if (isOverdue) {
-      // Get fine per day from settings (default: 5.00)
-      const fineSetting = await prisma.settings.findUnique({
-        where: { key: 'FINE_PER_DAY' }
-      })
-      const finePerDay = fineSetting ? parseFloat(fineSetting.value) : 5.00
-      const fineAmount = daysOverdue * finePerDay
-
-      fine = {
-        amount: fineAmount,
-        reason: `Book returned ${daysOverdue} day(s) late`,
-        daysOverdue
-      }
-    }
-
     // Use transaction to ensure atomicity
     const result = await prisma.$transaction(async (tx) => {
       // Update transaction
@@ -135,20 +118,6 @@ export async function PATCH(
         }
       })
 
-      // Create fine record if overdue
-      let createdFine = null
-      if (fine) {
-        createdFine = await tx.fine.create({
-          data: {
-            transactionId: transaction.id,
-            userId: transaction.userId,
-            amount: fine.amount,
-            reason: fine.reason,
-            status: 'UNPAID'
-          }
-        })
-      }
-
       // Create book history if damaged or lost
       if (validated.condition !== 'GOOD') {
         await tx.bookHistory.create({
@@ -168,14 +137,13 @@ export async function PATCH(
           action: 'RETURN_BOOK',
           entityType: 'TRANSACTION',
           entityId: id,
-          description: `Staff ${user.firstName} ${user.lastName} processed return of "${transaction.book.title}" by ${transaction.user.firstName} ${transaction.user.lastName}. Condition: ${validated.condition}${fine ? `, Fine: $${fine.amount}` : ''}`
+          description: `Staff ${user.firstName} ${user.lastName} processed return of "${transaction.book.title}" by ${transaction.user.firstName} ${transaction.user.lastName}. Condition: ${validated.condition}`
         }
       })
 
       return {
         transaction: updatedTransaction,
         book: updatedBook,
-        fine: createdFine,
         isOverdue,
         daysOverdue: isOverdue ? daysOverdue : 0
       }
@@ -184,9 +152,7 @@ export async function PATCH(
     return NextResponse.json({
       success: true,
       data: result,
-      message: isOverdue 
-        ? `Book returned successfully. A fine of $${result.fine?.amount} has been applied for ${result.daysOverdue} overdue days.`
-        : 'Book returned successfully'
+      message: 'Book returned successfully'
     })
 
   } catch (error) {

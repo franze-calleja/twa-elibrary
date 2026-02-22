@@ -66,12 +66,6 @@ export async function GET(
                 barcode: true,
                 coverImage: true,
               }
-            },
-            fine: {
-              select: {
-                amount: true,
-                status: true
-              }
             }
           },
           orderBy: {

@@ -25,7 +25,6 @@ export interface UserProfile {
   lastLoginAt: string | null
   _count?: {
     transactions: number
-    fines: number
   }
 }
 

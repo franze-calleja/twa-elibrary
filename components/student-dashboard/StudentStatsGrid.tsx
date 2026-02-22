@@ -6,7 +6,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
-import { BookOpen, AlertCircle, DollarSign, CheckCircle } from 'lucide-react'
+import { BookOpen, AlertCircle, CheckCircle } from 'lucide-react'
 import { LucideIcon } from 'lucide-react'
 import type { StudentDashboardStats } from '@/types'
 
@@ -82,8 +82,7 @@ const StatCardSkeleton = () => (
 export function StudentStatsGrid({ stats, isLoading }: StudentStatsGridProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCardSkeleton />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCardSkeleton />
         <StatCardSkeleton />
         <StatCardSkeleton />
@@ -96,11 +95,10 @@ export function StudentStatsGrid({ stats, isLoading }: StudentStatsGridProps) {
   }
 
   const hasOverdue = stats.overdueBooks > 0
-  const hasFines = stats.unpaidFines > 0
   const isLimitReached = stats.borrowedBooks >= stats.borrowingLimit
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <StatCard
         title="Borrowed Books"
         value={stats.borrowedBooks}
@@ -117,14 +115,6 @@ export function StudentStatsGrid({ stats, isLoading }: StudentStatsGridProps) {
         icon={AlertCircle}
         variant={hasOverdue ? 'danger' : 'success'}
         badge={hasOverdue ? 'Action needed' : undefined}
-      />
-      
-      <StatCard
-        title="Outstanding Fines"
-        value={`₱${Number(stats.unpaidFines).toFixed(2)}`}
-        subtitle={hasFines ? 'Please settle your fines' : 'No pending fines'}
-        icon={DollarSign}
-        variant={hasFines ? 'warning' : 'success'}
       />
       
       <StatCard

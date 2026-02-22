@@ -80,7 +80,6 @@ model User {
   // Relations
   transactions      Transaction[]
   reservations      Reservation[]
-  fines             Fine[]
   auditLogs         AuditLog[]
   
   @@index([email])
@@ -181,7 +180,6 @@ model Transaction {
   // Relations
   book              Book              @relation(fields: [bookId], references: [id])
   user              User              @relation(fields: [userId], references: [id])
-  fine              Fine?
   
   @@index([bookId])
   @@index([userId])
@@ -209,28 +207,6 @@ model Reservation {
   @@index([userId])
   @@index([status])
   @@index([expiresAt])
-}
-
-model Fine {
-  id                String            @id @default(uuid())
-  transactionId     String            @unique
-  userId            String
-  amount            Decimal           @db.Decimal(10, 2)
-  reason            String
-  status            String            @default("UNPAID") // UNPAID, PAID, WAIVED
-  
-  issuedAt          DateTime          @default(now())
-  paidAt            DateTime?
-  
-  notes             String?           @db.Text
-  
-  // Relations
-  transaction       Transaction       @relation(fields: [transactionId], references: [id])
-  user              User              @relation(fields: [userId], references: [id])
-  
-  @@index([userId])
-  @@index([status])
-  @@index([issuedAt])
 }
 
 model BookHistory {

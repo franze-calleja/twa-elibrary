@@ -67,8 +67,7 @@ export async function GET(request: NextRequest) {
               phone: true,
               avatar: true
             }
-          },
-          fine: true
+          }
         }
       }),
       

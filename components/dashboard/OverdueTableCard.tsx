@@ -93,14 +93,12 @@ export function OverdueTableCard({ overdueBooks, isLoading, total = 0 }: Overdue
                 <TableHead>Student</TableHead>
                 <TableHead>Due Date</TableHead>
                 <TableHead>Overdue By</TableHead>
-                <TableHead>Fine</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {overdueBooks.map((transaction) => {
                 const daysOverdue = differenceInDays(new Date(), new Date(transaction.dueDate))
-                const fineAmount = transaction.fine?.amount ? Number(transaction.fine.amount) : 0
                 
                 return (
                   <TableRow key={transaction.id}>
@@ -124,15 +122,6 @@ export function OverdueTableCard({ overdueBooks, isLoading, total = 0 }: Overdue
                       <Badge variant="destructive">
                         {daysOverdue} {daysOverdue === 1 ? 'day' : 'days'}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {fineAmount > 0 ? (
-                        <div className="font-medium text-red-600 dark:text-red-400">
-                          ₱{fineAmount.toFixed(2)}
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="outline" size="sm" asChild>

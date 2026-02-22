@@ -88,8 +88,7 @@ export async function GET(request: NextRequest) {
               email: true,
               studentId: true
             }
-          },
-          fine: true
+          }
         },
         orderBy: {
           [sortBy]: sortOrder
@@ -219,21 +218,6 @@ export async function POST(request: NextRequest) {
     if (overdueCount > 0) {
       return NextResponse.json(
         { success: false, error: { code: 'HAS_OVERDUE_BOOKS', message: 'You have overdue books. Please return them first.' } },
-        { status: 400 }
-      )
-    }
-
-    // Check for unpaid fines
-    const unpaidFines = await prisma.fine.findFirst({
-      where: {
-        userId: user.id,
-        status: 'UNPAID'
-      }
-    })
-
-    if (unpaidFines) {
-      return NextResponse.json(
-        { success: false, error: { code: 'HAS_UNPAID_FINES', message: 'You have unpaid fines. Please clear them first.' } },
         { status: 400 }
       )
     }

@@ -313,43 +313,6 @@ export default function TransactionDetailPage({
           </CardContent>
         </Card>
 
-        {/* Fine Information (if exists) */}
-        {transaction.fine && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Fine Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Amount:</span>
-                <span className="text-lg font-semibold text-red-600">
-                  ₱{Number(transaction.fine.amount).toFixed(2)}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Reason:</span>
-                <span className="text-sm">{transaction.fine.reason}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Status:</span>
-                <Badge variant={transaction.fine.status === 'PAID' ? 'default' : 'destructive'}>
-                  {transaction.fine.status}
-                </Badge>
-              </div>
-
-              {transaction.fine.paidAt && (
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Paid On:</span>
-                  <span className="text-sm">
-                    {format(new Date(transaction.fine.paidAt), 'MMM dd, yyyy')}
-                  </span>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
       </div>
 
       {/* Actions */}

@@ -12,11 +12,10 @@ import { AlertCircle, Calendar } from 'lucide-react'
 import { format, differenceInDays } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
-import type { Transaction, Book, Fine } from '@prisma/client'
+import type { Transaction, Book } from '@prisma/client'
 
 interface ActiveBook extends Transaction {
   book: Pick<Book, 'id' | 'title' | 'author' | 'barcode' | 'coverImage'>
-  fine?: Pick<Fine, 'amount' | 'status'> | null
 }
 
 interface ActiveBooksCardProps {
@@ -143,19 +142,6 @@ export function ActiveBooksCard({ activeBooks }: ActiveBooksCardProps) {
                     {transaction.renewalCount > 0 && (
                       <div className="text-xs text-muted-foreground">
                         Renewed {transaction.renewalCount} time{transaction.renewalCount !== 1 ? 's' : ''}
-                      </div>
-                    )}
-
-                    {/* Fine Info */}
-                    {transaction.fine && (
-                      <div className="flex items-center mt-2">
-                        <AlertCircle className="h-4 w-4 mr-2 text-destructive" />
-                        <span className="text-sm text-destructive font-medium">
-                          Fine: ₱{Number(transaction.fine.amount).toFixed(2)}
-                        </span>
-                        <Badge variant="destructive" className="ml-2">
-                          {transaction.fine.status}
-                        </Badge>
                       </div>
                     )}
                   </div>

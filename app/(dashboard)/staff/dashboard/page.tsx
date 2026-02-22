@@ -86,12 +86,6 @@ export default function StaffDashboardPage() {
       value: stats.data.overdueTransactions,
       subtitle: 'Need attention',
       icon: 'AlarmClock'
-    },
-    {
-      label: 'Total Fines',
-      value: Number(stats.data.totalFines || 0),
-      subtitle: `₱${Number(stats.data.unpaidFines || 0).toFixed(2)} unpaid`,
-      icon: 'DollarSign'
     }
   ] : []
   

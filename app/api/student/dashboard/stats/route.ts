@@ -28,7 +28,6 @@ export async function GET(request: NextRequest) {
     const [
       borrowedBooksCount,
       overdueBooksCount,
-      unpaidFinesSum,
       userDetails
     ] = await Promise.all([
       // Currently borrowed books (ACTIVE status)
@@ -47,17 +46,6 @@ export async function GET(request: NextRequest) {
           dueDate: {
             lt: now
           }
-        }
-      }),
-      
-      // Total unpaid fines
-      prisma.fine.aggregate({
-        where: {
-          userId: user.id,
-          status: 'UNPAID'
-        },
-        _sum: {
-          amount: true
         }
       }),
       
@@ -89,7 +77,6 @@ export async function GET(request: NextRequest) {
       data: {
         borrowedBooks: borrowedBooksCount,
         overdueBooks: overdueBooksCount,
-        unpaidFines: Number(unpaidFinesSum._sum.amount || 0),
         borrowingLimit,
         availableBorrowings,
         totalBorrowingHistory,

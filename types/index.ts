@@ -8,7 +8,6 @@ import type {
   Category, 
   Transaction, 
   Reservation, 
-  Fine,
   BookCategory,
   BookHistory,
   AuditLog,
@@ -27,7 +26,6 @@ export type {
   Category,
   Transaction,
   Reservation,
-  Fine,
   BookCategory,
   BookHistory,
   AuditLog,
@@ -102,26 +100,18 @@ export interface BookWithDetails extends Book {
 export interface TransactionWithDetails extends Transaction {
   book: Book
   user: Omit<User, 'password'>
-  fine?: Fine
 }
 
 export interface UserWithStats extends Omit<User, 'password'> {
   _count: {
     transactions: number
-    fines: number
   }
   activeTransactions?: Transaction[]
   overdueTransactions?: Transaction[]
-  unpaidFines?: Fine[]
 }
 
 export interface ReservationWithDetails extends Reservation {
   book: Book
-  user: Omit<User, 'password'>
-}
-
-export interface FineWithDetails extends Fine {
-  transaction: Transaction
   user: Omit<User, 'password'>
 }
 
@@ -137,14 +127,11 @@ export interface DashboardStats {
   activeStudents: number
   activeTransactions: number
   overdueTransactions: number
-  totalFines: number
-  unpaidFines: number
 }
 
 export interface StudentDashboardStats {
   borrowedBooks: number
   overdueBooks: number
-  unpaidFines: number
   borrowingLimit: number
   availableBorrowings: number
   totalBorrowingHistory: number
@@ -232,16 +219,7 @@ export interface UserQueryParams {
   sortOrder?: 'asc' | 'desc'
 }
 
-export interface FineQueryParams {
-  page?: number
-  limit?: number
-  userId?: string
-  status?: 'PAID' | 'UNPAID' | 'WAIVED'
-  startDate?: string
-  endDate?: string
-  sortBy?: 'issuedAt' | 'amount'
-  sortOrder?: 'asc' | 'desc'
-}
+export interface FineQueryParams {}
 
 // ================================
 // Account Management Types
@@ -250,7 +228,6 @@ export interface FineQueryParams {
 export interface UserProfile extends Omit<User, 'password'> {
   _count?: {
     transactions: number
-    fines: number
   }
 }
 
@@ -267,7 +244,6 @@ export interface PasswordChangeData {
 
 export interface AccountStats {
   activeLoans: number
-  unpaidFines: number
   borrowingLimit: number
   availableSlots: number
   canBorrow: boolean
@@ -280,7 +256,6 @@ export interface AccountStats {
 export interface TransactionWithDetails extends Transaction {
   book: Book
   user: Omit<User, 'password'>
-  fine?: Fine
 }
 
 export interface BorrowRequest {
@@ -333,7 +308,6 @@ export interface BorrowEligibility {
     accountActive?: boolean
     withinLimit?: boolean
     noOverdueBooks?: boolean
-    noUnpaidFines?: boolean
   }
 }
 
@@ -352,7 +326,7 @@ export interface TransactionStats {
 
 export interface DashboardActivity {
   id: string
-  type: 'BORROW' | 'RETURN' | 'RENEW' | 'OVERDUE' | 'FINE' | 'REQUEST'
+  type: 'BORROW' | 'RETURN' | 'RENEW' | 'OVERDUE' | 'REQUEST'
   title: string
   description: string
   timestamp: Date | string

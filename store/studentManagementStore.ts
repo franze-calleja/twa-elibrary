@@ -22,7 +22,6 @@ interface StudentFilters {
   program: string
   yearLevel: number | null
   hasOverdue: boolean
-  hasFines: boolean
 }
 
 interface StudentSortConfig {
@@ -59,7 +58,6 @@ interface StudentManagementState {
       status: boolean
       activeLoans: boolean
       overdueBooks: boolean
-      fines: boolean
     }
   }
   
@@ -109,8 +107,7 @@ const defaultFilters: StudentFilters = {
   status: 'ALL',
   program: '',
   yearLevel: null,
-  hasOverdue: false,
-  hasFines: false
+  hasOverdue: false
 }
 
 const defaultSortConfig: StudentSortConfig = {
@@ -130,8 +127,7 @@ const defaultPreferences = {
     borrowingLimit: true,
     status: true,
     activeLoans: true,
-    overdueBooks: true,
-    fines: true
+    overdueBooks: true
   }
 }
 

@@ -252,7 +252,6 @@ export function useReturnBook(transactionId: string): UseMutationResult<any, any
       queryClient.invalidateQueries({ queryKey: ['transactions'] })
       queryClient.invalidateQueries({ queryKey: ['books'] })
       queryClient.invalidateQueries({ queryKey: ['users'] })
-      queryClient.invalidateQueries({ queryKey: ['fines'] })
       setScannedBarcode(null)
     }
   })

@@ -32,7 +32,6 @@ import {
   AlertCircle,
   AlertTriangle,
   Loader2,
-  DollarSign,
   Calendar
 } from 'lucide-react'
 import { differenceInDays, format } from 'date-fns'
@@ -55,10 +54,8 @@ export function ReturnBookDialog({
 
   const returnBook = useReturnBook(transaction.id)
 
-  // Calculate overdue fine
+  // Calculate days overdue (informational only)
   const daysOverdue = Math.max(0, differenceInDays(new Date(), new Date(transaction.dueDate)))
-  const finePerDay = 5 // Should be fetched from settings
-  const calculatedFine = daysOverdue * finePerDay
 
   const handleReturn = async () => {
     try {
@@ -126,10 +123,6 @@ export function ReturnBookDialog({
                 <div className="space-y-1">
                   <p>Due date was: {format(new Date(transaction.dueDate), 'MMMM dd, yyyy')}</p>
                   <p>Days overdue: <strong>{daysOverdue} day{daysOverdue !== 1 ? 's' : ''}</strong></p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <DollarSign className="h-4 w-4" />
-                    <span className="font-semibold">Fine: ₱{calculatedFine.toFixed(2)}</span>
-                  </div>
                 </div>
               </AlertDescription>
             </Alert>
@@ -226,16 +219,10 @@ export function ReturnBookDialog({
                 <span className="font-medium">{condition}</span>
               </div>
               {daysOverdue > 0 && (
-                <>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Days Overdue:</span>
-                    <span className="font-medium text-red-600">{daysOverdue}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Overdue Fine:</span>
-                    <span className="font-semibold text-red-600">₱{calculatedFine.toFixed(2)}</span>
-                  </div>
-                </>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Days Overdue:</span>
+                  <span className="font-medium text-red-600">{daysOverdue}</span>
+                </div>
               )}
             </div>
           </div>
